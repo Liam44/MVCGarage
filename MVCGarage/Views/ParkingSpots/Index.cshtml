@@ -38,19 +38,14 @@
         {
             bool available = false;
             bool parked = false;
-            bool booked = false;
 
-            if (item.Vehicle == null)
+            if (item.CheckIn == null)
             {
                 available = true;
             }
-            else if (item.Vehicle.ParkingSpotID == item.ParkingSpot.ID)
-            {
-                parked = true;
-            }
             else
             {
-                booked = true;
+                parked = !item.CheckIn.Booked;
             }
 
             <tr>
@@ -58,43 +53,43 @@
                     @Html.DisplayFor(modelItem => item.ParkingSpot.Label)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem=> item.Availability)
+                    @Html.DisplayFor(modelItem => item.Availability)
                 </td>
                 <td>
-                    @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(item.ParkingSpot.VehicleType))
+                    @Html.DisplayFor(modelItem => item.ParkingSpot.VehicleType.Type)
                 </td>
                 <td>
                     @if (available || parked)
                     {
                         @item.ParkingSpot.DisplayFee();
                     }
-                    else if (booked)
+                    else
                     {
                         @item.ParkingSpot.DisplayMonthlyFee();
                     }
                 </td>
                 <td>
-                    @if (booked)
-                    {
-                        @Html.ActionLink("Unbook",
-                                         "UnbookAParkingSpot", 
-                                         "Garage", 
-                                         new { vehicleId = item.ParkingSpot.VehicleID }, 
-                                         null)
-                        <text> | </text>
-                    }
-                    @if (parked)
-                    {
-                        @Html.ActionLink("Check out", 
-                                         "CheckOutAVehicle", 
-                                         "Garage", 
-                                         new { vehicleId = item.ParkingSpot.VehicleID }, 
-                                         null)
-                        <text> | </text>
-                    }
                     @if (available)
                     {
                         @Html.ActionLink("Edit", "Edit", new { id = item.ParkingSpot.ID })
+                        <text> | </text>
+                    }
+                    else if (parked)
+                    {
+                        @Html.ActionLink("Check out",
+                                         "CheckOutAVehicle",
+                                         "Garage",
+                                         new { vehicleId = item.CheckIn.VehicleID },
+                                         null)
+                        <text> | </text>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Unbook",
+                                         "UnbookAParkingSpot",
+                                         "Garage",
+                                         new { vehicleId = item.CheckIn.VehicleID },
+                                         null)
                         <text> | </text>
                     }
                     @Html.ActionLink("Details", "Details", new { id = item.ParkingSpot.ID })

@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\MVCGarage",
+    "\\MVCGarage\\ViewModels",
+    "\\MVCGarage\\ViewModels\\Shared",
+    "\\MVCGarage\\Views",
+    "\\MVCGarage\\Views\\Garage"
+  ],
+  "SelectedNode": "\\MVCGarage\\Views\\Garage\\_DisplayVehiclesPartial.cshtml",
+  "PreviewInSolutionExplorer": false
+}

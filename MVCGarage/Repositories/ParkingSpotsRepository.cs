@@ -16,9 +16,14 @@ namespace MVCGarage.Repositories
         {3, 0.80 },
         {4, 1.00 }};
 
-        public Dictionary<int, double> DefaultFees()
+        public Dictionary<VehicleType, double> DefaultFees()
         {
-            return defaultFees;
+            Dictionary<VehicleType, double> result = new Dictionary<VehicleType, double>();
+
+            foreach (int vehicleTypeId in defaultFees.Keys)
+                result.Add(db.VehicleTypes.SingleOrDefault(vt => vt.ID == vehicleTypeId), defaultFees[vehicleTypeId]);
+
+            return result;
         }
 
         public double DefaultFee(int vehicleTypeId)

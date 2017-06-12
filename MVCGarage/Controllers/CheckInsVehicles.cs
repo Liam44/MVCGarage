@@ -34,9 +34,23 @@ namespace MVCGarage.Controllers
                 .Select(v => new
                 {
                     Vehicle = v,
-                    CheckIn = checkIns.CheckIns().Where(ch => ch.Free && ch.VehicleID == v.ID)
-                })
-                .Select(v_ch => v_ch.Vehicle);
+                    CheckIns = checkIns.CheckIns()
+                                .Where(ch => !ch.Free && ch.VehicleID == v.ID).Select(ch=>ch.VehicleID)
+                }).Where(vc => !vc.CheckIns.ToList().Contains(vc.Vehicle.ID)).Select(vc => vc.Vehicle);
+        }
+
+        public IEnumerable<InnerJoinResult> InnerJoin(IEnumerable<Vehicle> vehicles)
+        {
+            return vehicles.Select(v => new
+            {
+                Vehicle = v,
+                CheckIn = checkIns.CheckIns().FirstOrDefault(ch => !ch.Free && ch.VehicleID == v.ID)
+            }).Select(vch => new InnerJoinResult
+            {
+                Vehicle = vch.Vehicle,
+                CheckIn = vch.CheckIn,
+                ParkingSpot = vch.CheckIn == null ? null : vch.CheckIn.ParkingSpot
+            });
         }
     }
 }

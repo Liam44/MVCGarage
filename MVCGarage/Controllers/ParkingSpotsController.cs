@@ -33,10 +33,16 @@ namespace MVCGarage.Controllers
                     list = list.OrderByDescending(p => p.Label);
                     break;
                 case "available_asc":
-                    list = list.OrderBy(p => new CheckInsParkingSpots().Availability(p.ID));
+                    list = new CheckInsParkingSpots().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
+                           .ThenBy(v_ch_p => new CheckInsParkingSpots().Availability(v_ch_p.CheckIn))
+                           .Select(v_ch_p => v_ch_p.ParkingSpot);
                     break;
                 case "available_desc":
-                    list = list.OrderByDescending(p => new CheckInsParkingSpots().Availability(p.ID));
+                    list = new CheckInsParkingSpots().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
+                           .ThenByDescending(v_ch_p => new CheckInsParkingSpots().Availability(v_ch_p.CheckIn))
+                           .Select(v_ch_p => v_ch_p.ParkingSpot);
                     break;
                 case "vehicletype_asc":
                     list = list.OrderBy(p => p.VehicleType.Type);
@@ -45,10 +51,16 @@ namespace MVCGarage.Controllers
                     list = list.OrderByDescending(p => p.VehicleType.Type);
                     break;
                 case "fee_asc":
-                    list = list.OrderBy(p => new CheckInsParkingSpots().Availability(p.ID).StartsWith("Booked") ? p.MonthlyFee() : p.GetFee());
+                    list = new CheckInsParkingSpots().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
+                           .ThenBy(v_ch_p => GetFee(v_ch_p))
+                           .Select(v_ch_p => v_ch_p.ParkingSpot);
                     break;
                 case "fee_desc":
-                    list = list.OrderByDescending(p => new CheckInsParkingSpots().Availability(p.ID).StartsWith("Booked") ? p.MonthlyFee() : p.GetFee());
+                    list = new CheckInsParkingSpots().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
+                           .ThenByDescending(v_ch_p => GetFee(v_ch_p))
+                           .Select(v_ch_p => v_ch_p.ParkingSpot);
                     break;
                 default:
                     list = list.OrderBy(p => p.Label);
@@ -56,6 +68,16 @@ namespace MVCGarage.Controllers
             }
 
             return list;
+        }
+
+        private double GetFee(InnerJoinResult innerJoin)
+        {
+            if (innerJoin.CheckIn == null)
+                return 0;
+            else if (innerJoin.CheckIn.Booked)
+                return innerJoin.ParkingSpot.MonthlyFee();
+            else
+                return innerJoin.ParkingSpot.GetFee();
         }
 
         // GET: ParkingSpots
@@ -73,11 +95,13 @@ namespace MVCGarage.Controllers
 
             foreach (ParkingSpot parkingSpot in Sort(parkingSpots, sortOrder).ToList())
             {
+                CheckIn checkIn = chps.CheckInByParkingSpot(parkingSpot.ID);
+
                 viewModel.Add(new DetailsParkingSpotVM
                 {
-                    Availability = chps.Availability(parkingSpot.ID),
+                    Availability = new CheckInsParkingSpots().Availability(checkIn),
                     ParkingSpot = parkingSpot,
-                    Vehicle = chps.ParkedVehicle(parkingSpot.ID)
+                    CheckIn = checkIn
                 });
             }
 
@@ -91,15 +115,21 @@ namespace MVCGarage.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             ParkingSpot parkingSpot = db.ParkingSpot(id);
             if (parkingSpot == null)
             {
                 return HttpNotFound();
             }
+
+            CheckInsParkingSpots chps = new CheckInsParkingSpots();
+            CheckIn checkIn = chps.CheckInByParkingSpot(parkingSpot.ID);
+
             return View(new DetailsParkingSpotVM
             {
+                Availability = chps.Availability(checkIn),
                 ParkingSpot = parkingSpot,
-                Vehicle = new CheckInsParkingSpots().ParkedVehicle(parkingSpot.ID)
+                CheckIn = checkIn
             });
         }
 
@@ -119,11 +149,11 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,VehicleID,Label,Fee,VehicleType")] ParkingSpot parkingSpot)
+        public ActionResult Create([Bind(Include = "ID,Label,Fee,VehicleTypeID")] ParkingSpot parkingSpot)
         {
             if (ModelState.IsValid)
             {
-                // Check that the registration plate is still unique
+                // Check that the label is still unique
                 if (db.ParkingSpotByIdentifiant(parkingSpot.Label) != null)
                 {
                     ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
@@ -161,7 +191,7 @@ namespace MVCGarage.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList(parkingSpot.VehicleTypeID);
             return View(parkingSpot);
         }
 
@@ -170,7 +200,7 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,VehicleID,Label,Fee,VehicleType")] ParkingSpot parkingSpot)
+        public ActionResult Edit([Bind(Include = "ID,Label,Fee,VehicleTypeID")] ParkingSpot parkingSpot)
         {
             if (ModelState.IsValid)
             {
@@ -253,15 +283,16 @@ namespace MVCGarage.Controllers
 
             if (viewModel.CheckIn)
                 return RedirectToAction("VehicleCheckedIn",
-                                        "Garage",
+                                        "CheckIns",
                                         new SelectAParkingSpotVM
                                         {
+                                            CheckIn = true,
                                             ParkingSpotID = viewModel.ParkingSpotID,
                                             VehicleID = viewModel.VehicleID
                                         });
             else
                 return RedirectToAction("ParkingSpotBooked",
-                                        "Garage",
+                                        "CheckIns",
                                         new SelectAParkingSpotVM
                                         {
                                             ParkingSpotID = viewModel.ParkingSpotID,

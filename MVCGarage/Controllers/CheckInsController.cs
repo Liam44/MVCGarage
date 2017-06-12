@@ -128,6 +128,10 @@ namespace MVCGarage.Controllers
         [HttpGet]
         public ActionResult VehicleCheckedIn(SelectAParkingSpotVM viewModel)
         {
+            // Check that the vehicle isn't already parked/hasn't booked a place
+            if (db.CheckInByVehicle(viewModel.VehicleID) != null)
+                return RedirectToAction("Index", "Garage");
+
             Vehicle vehicle = new GarageController().Vehicle(viewModel.VehicleID);
 
             if (vehicle == null)
@@ -149,14 +153,12 @@ namespace MVCGarage.Controllers
                     errorMessage = "You must select a parking spot!"
                 });
 
-            db.CheckIn(viewModel.VehicleID, viewModel.ParkingSpotID);
+            CheckIn checkIn = db.CheckIn(viewModel.VehicleID, viewModel.ParkingSpotID);
+            checkIn.Vehicle = vehicle;
+            checkIn.ParkingSpot = parkingSpot;
 
             // Displays the chosen parking spot
-            return View(new VehicleCheckedInVM
-            {
-                Vehicle = vehicles.Vehicle(viewModel.VehicleID),
-                ParkingSpot = parkingSpots.ParkingSpot(viewModel.ParkingSpotID)
-            });
+            return View(checkIn);
         }
 
         [HttpGet]
@@ -190,15 +192,17 @@ namespace MVCGarage.Controllers
         [HttpGet]
         public ActionResult ParkingSpotBooked(SelectAParkingSpotVM viewModel)
         {
+            // Check that the vehicle isn't already parked/hasn't booked a place
+            if (db.CheckInByVehicle(viewModel.VehicleID) != null)
+                return RedirectToAction("Index", "Garage");
+
             // Check in the vehicle ID to the parking spot
-            db.CheckIn(viewModel.VehicleID, viewModel.ParkingSpotID);
+            CheckIn checkIn = db.Book(viewModel.VehicleID, viewModel.ParkingSpotID);
+            checkIn.Vehicle = new GarageController().Vehicle(viewModel.VehicleID);
+            checkIn.ParkingSpot = parkingSpots.ParkingSpot(viewModel.ParkingSpotID);
 
             // Displays the chosen parking spot
-            return View(new BookedParkingSpotVM
-            {
-                Vehicle = vehicles.Vehicle(viewModel.VehicleID),
-                ParkingSpot = parkingSpots.ParkingSpot(viewModel.ParkingSpotID)
-            });
+            return View(checkIn);
         }
 
         [HttpGet]
