@@ -7,7 +7,7 @@ namespace MVCGarage.ViewModels.ParkingSpots
     {
         public ETypeVehicle VehicleType { get; set; }
         public ParkingSpot ParkingSpot { get; set; }
-        public Dictionary<ETypeVehicle, double> DefaultFees { get; set; }
+        public Dictionary<int, double> DefaultFees { get; set; }
         public string ErrorMessage { get; set; }
     }
 }

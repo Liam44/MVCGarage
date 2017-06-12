@@ -23,83 +23,63 @@ namespace MVCGarage.Repositories
         }
 
         /// <summary>
-        /// Returns informations on the currently booked parking spot
+        /// Indicates if the parking spot is currently taken or not (booked or parked on)
         /// </summary>
-        /// <param name="parkingSpotId">ID of the booked parking spot</param>
+        /// <param name="parkingSpotId">ID of the parking spot</param>
         /// <returns></returns>
-        public CheckIn BookedCheckInByParkingSpot(int parkingSpotId)
+        public bool IsAvailable(int parkingSpotId)
         {
-            return CheckIns().SingleOrDefault(ch => ch.Booked && ch.ParkingSpotID == parkingSpotId && !ch.Free);
+            return CheckInByParkingSpot(parkingSpotId) == null;
         }
 
         /// <summary>
-        /// Returns informations on the currently booked parking spot
+        /// Inidicates if the vehicle currently uses a parking spot (booked or parked on)
         /// </summary>
-        /// <param name="vehicleId">ID of the vehicle for which the parking spot has been booked</param>
+        /// <param name="vehicleId">ID of the vehicle</param>
         /// <returns></returns>
-        public CheckIn BookedCheckInByVehicle(int vehicleId)
+        public bool IsParked(int vehicleId)
         {
-            return CheckIns().SingleOrDefault(ch => ch.Booked && ch.VehicleID == vehicleId && !ch.Free);
+            return CheckInByVehicle(vehicleId) == null;
         }
 
         /// <summary>
-        /// Returns informations on the currently parked parking spot
+        /// Returns informations on the currently parked/booked parking spot
         /// </summary>
         /// <param name="parkingSpotId">Parking spot currently occupied by a vehicle</param>
         /// <returns></returns>
-        public CheckIn ParkedCheckInByParkingSpot(int checkInId)
+        public CheckIn CheckInByParkingSpot(int parkingSpotId)
         {
-            return CheckIns().SingleOrDefault(ch => !ch.Booked && ch.ParkingSpotID == checkInId && !ch.Free);
+            return CheckIns().SingleOrDefault(ch => ch.ParkingSpotID == parkingSpotId && !ch.Free);
         }
 
         /// <summary>
-        /// Returns informations on the currently booked parking spot
+        /// Returns informations on the currently parked/booked parking spot
         /// </summary>
         /// <param name="vehicleId">ID of the vehicle currently parked on the parking spot</param>
         /// <returns></returns>
-        public CheckIn ParkedCheckInByVehicle(int vehicleId)
+        public CheckIn CheckInByVehicle(int vehicleId)
         {
-            return CheckIns().SingleOrDefault(ch => !ch.Booked && ch.VehicleID == vehicleId && !ch.Free);
+            return CheckIns().SingleOrDefault(ch => ch.VehicleID == vehicleId && !ch.Free);
         }
 
         /// <summary>
-        /// Returns historical informations about all the times the parking spot has been booked
+        /// Returns historical informations about all the times the parking spot has been occupied
         /// </summary>
         /// <param name="parkingSpotId">ID of the booked parking spot</param>
         /// <returns></returns>
-        public IEnumerable<CheckIn> BookedCheckInsByParkingSpot(int parkingSpotId)
+        public IEnumerable<CheckIn> CheckInsByParkingSpot(int parkingSpotId)
         {
-            return CheckIns().Where(ch => ch.Booked && ch.ParkingSpotID == parkingSpotId);
+            return CheckIns().Where(ch => ch.Free && ch.ParkingSpotID == parkingSpotId);
         }
 
         /// <summary>
-        /// Returns historical informations about all the times a parking spot has been booked for that vehicle
+        /// Returns historical informations about all the times a parking spot has been occupied by that vehicle
         /// </summary>
         /// <param name="vehicleId">ID of the vehicle which the parking spots have been booked for</param>
         /// <returns></returns>
-        public IEnumerable<CheckIn> BookedCheckInsByVehicle(int vehicleId)
+        public IEnumerable<CheckIn> CheckInsByVehicle(int vehicleId)
         {
-            return CheckIns().Where(ch => ch.Booked && ch.VehicleID == vehicleId);
-        }
-
-        /// <summary>
-        /// Returns historical informations about all the times the parking spot has been parked
-        /// </summary>
-        /// <param name="parkingSpotId">ID of the booked parking spot</param>
-        /// <returns></returns>
-        public IEnumerable<CheckIn> ParkedCheckInsByParkingSpot(int parkingSpotId)
-        {
-            return CheckIns().Where(ch => !ch.Booked && ch.ParkingSpotID == parkingSpotId);
-        }
-
-        /// <summary>
-        /// Returns historical informations about all the times a parking spot has been parked on by that vehicle
-        /// </summary>
-        /// <param name="vehicleId">ID of the vehicle which occupied the parking spots</param>
-        /// <returns></returns>
-        public IEnumerable<CheckIn> ParkedCheckInsByVehicle(int vehicleId)
-        {
-            return CheckIns().Where(ch => !ch.Booked && ch.VehicleID == vehicleId);
+            return CheckIns().Where(ch => ch.Free && ch.VehicleID == vehicleId);
         }
 
         public void Add(CheckIn checkIn)
@@ -112,6 +92,50 @@ namespace MVCGarage.Repositories
         {
             db.Entry(checkIn).State = EntityState.Modified;
             SaveChanges();
+        }
+
+        public void CheckIn(int vehicleId, int parkingSpotId)
+        {
+            Add(new CheckIn
+            {
+                Free = false,
+                Booked = false,
+                VehicleID = vehicleId,
+                ParkingSpotID = parkingSpotId,
+                CheckInTime = DateTime.Now
+            });
+        }
+
+        public void CheckOut(int id)
+        {
+            CheckIn checkIn = CheckIn(id);
+            if (checkIn != null)
+            {
+                checkIn.Free = true;
+                Edit(checkIn);
+            }
+        }
+
+        public void Book(int vehicleId, int parkingSpotId)
+        {
+            Add(new CheckIn
+            {
+                Free = false,
+                Booked = true,
+                VehicleID = vehicleId,
+                ParkingSpotID = parkingSpotId,
+                CheckInTime = DateTime.Now
+            });
+        }
+
+        public void Unbook(int id)
+        {
+            CheckIn checkIn = CheckIn(id);
+            if (checkIn != null)
+            {
+                checkIn.Free = true;
+                Edit(checkIn);
+            }
         }
 
         private void SaveChanges()

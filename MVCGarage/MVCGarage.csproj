@@ -147,36 +147,34 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\GarageController.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Controllers\CheckInsController.cs" />
+    <Compile Include="Controllers\CheckInsParkingSpots.cs" />
+    <Compile Include="Controllers\CheckInsVehicles.cs" />
+    <Compile Include="Controllers\GarageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OwnersController.cs" />
     <Compile Include="Controllers\ParkingSpotsController.cs" />
+    <Compile Include="Controllers\PopulateVehicleTypes.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="DataAccess\GarageContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706120845212_OwnersModel.cs" />
-    <Compile Include="Migrations\201706120845212_OwnersModel.Designer.cs">
-      <DependentUpon>201706120845212_OwnersModel.cs</DependentUpon>
+    <Compile Include="Migrations\201706121352130_Initial.cs" />
+    <Compile Include="Migrations\201706121352130_Initial.Designer.cs">
+      <DependentUpon>201706121352130_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706120949442_CheckIn.cs" />
-    <Compile Include="Migrations\201706120949442_CheckIn.Designer.cs">
-      <DependentUpon>201706120949442_CheckIn.cs</DependentUpon>
+    <Compile Include="Migrations\201706121403058_Initial1.cs" />
+    <Compile Include="Migrations\201706121403058_Initial1.Designer.cs">
+      <DependentUpon>201706121403058_Initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CheckIn.cs" />
     <Compile Include="Models\EnumHelper.cs" />
     <Compile Include="Models\ETypeVehicle.cs" />
     <Compile Include="Models\Owner.cs" />
-    <Compile Include="Models\ParkingSpot.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Vehicle.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Models\ParkingSpot.cs" />
+    <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Models\VehicleType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -184,15 +182,15 @@
     <Compile Include="Repositories\CheckInsRepository.cs" />
     <Compile Include="Repositories\OwnersRepository.cs" />
     <Compile Include="Repositories\ParkingSpotsRepository.cs" />
-    <Compile Include="Repositories\VehicleRepository.cs" />
+    <Compile Include="Repositories\VehiclesRepository.cs" />
     <Compile Include="ViewModels\Shared\DisplayVehiclesVM.cs" />
-    <Compile Include="ViewModels\Garage\ParkingSpotUnbooked.cs" />
+    <Compile Include="ViewModels\CheckIns\ParkingSpotUnbooked.cs" />
     <Compile Include="ViewModels\Garage\SearchResultsVM.cs" />
     <Compile Include="ViewModels\Shared\DetailsParkingSpotVM.cs" />
     <Compile Include="ViewModels\ParkingSpots\SelectAParkingSpotVM.cs" />
-    <Compile Include="ViewModels\Garage\BookedParkingSpotVM.cs" />
-    <Compile Include="ViewModels\Garage\VehicleCheckedInVM.cs" />
-    <Compile Include="ViewModels\Garage\VehicleCheckedOutVM.cs" />
+    <Compile Include="ViewModels\CheckIns\BookedParkingSpotVM.cs" />
+    <Compile Include="ViewModels\CheckIns\VehicleCheckedInVM.cs" />
+    <Compile Include="ViewModels\CheckIns\VehicleCheckedOutVM.cs" />
     <Compile Include="ViewModels\ParkingSpots\CreateParkingSpotsVM.cs" />
     <Compile Include="ViewModels\ParkingSpots\EditParkingSpotVM.cs" />
     <Compile Include="ViewModels\Vehicles\CreateVehicleVM.cs" />
@@ -202,6 +200,10 @@
     <Content Include="App_Data\Garage.mdf" />
     <Content Include="App_Data\Garage_log.ldf">
       <DependentUpon>Garage.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\_Garage.mdf" />
+    <Content Include="App_Data\_Garage_log.ldf">
+      <DependentUpon>_Garage.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-override.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -286,11 +288,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706120845212_OwnersModel.resx">
-      <DependentUpon>201706120845212_OwnersModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706121352130_Initial.resx">
+      <DependentUpon>201706121352130_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706120949442_CheckIn.resx">
-      <DependentUpon>201706120949442_CheckIn.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706121403058_Initial1.resx">
+      <DependentUpon>201706121403058_Initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
