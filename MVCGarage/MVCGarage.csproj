@@ -154,6 +154,7 @@
     <Compile Include="Controllers\OwnersController.cs" />
     <Compile Include="Controllers\ParkingSpotsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Controllers\VehicleTypesController.cs" />
     <Compile Include="DataAccess\GarageContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -185,6 +186,7 @@
     <Compile Include="Repositories\OwnersRepository.cs" />
     <Compile Include="Repositories\ParkingSpotsRepository.cs" />
     <Compile Include="Repositories\VehicleRepository.cs" />
+    <Compile Include="Repositories\VehicleTypeRepository.cs" />
     <Compile Include="ViewModels\Shared\DisplayVehiclesVM.cs" />
     <Compile Include="ViewModels\Garage\ParkingSpotUnbooked.cs" />
     <Compile Include="ViewModels\Garage\SearchResultsVM.cs" />
@@ -269,6 +271,11 @@
     <Content Include="Views\Garage\Search.cshtml" />
     <Content Include="Views\Garage\Index.cshtml" />
     <Content Include="Views\Owners\Index.cshtml" />
+    <Content Include="Views\VehicleTypes\Create.cshtml" />
+    <Content Include="Views\VehicleTypes\Delete.cshtml" />
+    <Content Include="Views\VehicleTypes\Details.cshtml" />
+    <Content Include="Views\VehicleTypes\Edit.cshtml" />
+    <Content Include="Views\VehicleTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
