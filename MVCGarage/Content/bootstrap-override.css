@@ -1,0 +1,40 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+@font-face {
+    font-family: Drugs;
+    src: url("fonts/Drugs.otf") format('opentype');
+}
+
+body-bg {
+    background-image: url(images/body-bg-1.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-color: #2C302E;
+}
+
+.main-body-text {
+    color: white;
+    text-align: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 50px;
+    text-shadow: 2px 2px 20px #000;
+    margin-bottom: 7em;
+}
+
+.main-body-text h1 {
+    font-size: 100px;
+}
+
+.table-custom {
+    background-color: #808080;
+    color: black;
+    padding: 20px;
+    width: 80%;
+    height: auto;
+}

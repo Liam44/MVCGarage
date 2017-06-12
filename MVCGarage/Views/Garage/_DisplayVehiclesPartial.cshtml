@@ -1,0 +1,124 @@
+﻿@model MVCGarage.ViewModels.Shared.DisplayVehiclesVM
+
+<div class="container">
+    <div class="index-table">
+        <table>
+            <tr>
+                <th>
+                    @{string htmlName = @Html.DisplayNameFor(model => model.Vehicles.First().RegistrationPlate).ToHtmlString();}
+                    @Html.ActionLink(htmlName, Model.ViewName, new { sortOrder = ViewBag.RegistrationPlateSortParam })
+                </th>
+                <th>
+                    @{htmlName = @Html.DisplayNameFor(model => model.Vehicles.First().Owner).ToHtmlString();}
+                    @Html.ActionLink(htmlName, Model.ViewName, new { sortOrder = ViewBag.OwnerSortParam })
+                </th>
+                <th>
+                    @{htmlName = @Html.DisplayNameFor(model => model.Vehicles.First().VehicleType).ToHtmlString();}
+                    @Html.ActionLink(htmlName, Model.ViewName, new { sortOrder = ViewBag.VehicleVehicleTypeSortParam })
+                </th>
+                <th>
+                    @{htmlName = @Html.DisplayNameFor(model => model.ParkingSpotsVehicles.Values.First().CheckInTime).ToHtmlString();}
+                    @Html.ActionLink(htmlName, Model.ViewName, new { sortOrder = ViewBag.VehicleCheckInTimeSortParam })
+                </th>
+                <th>
+                    @Html.ActionLink("Parking spot", Model.ViewName, new { sortOrder = ViewBag.ParkingSpotSortParam })
+                </th>
+                <th>
+                    @{htmlName = @Html.DisplayNameFor(model => model.ParkingSpotsVehicles.Values.First().Fee).ToHtmlString();}
+                    @Html.ActionLink(htmlName, Model.ViewName, new { sortOrder = ViewBag.VehicleFeeSortParam })
+                </th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Vehicles)
+            {
+                MVCGarage.Models.ParkingSpot parkingSpot = Model.ParkingSpotsVehicles[item.ID];
+                MVCGarage.Models.ParkingSpot bookedParkingSpot = Model.BookedParkingSpots[item.ID];
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationPlate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner)
+                    </td>
+                    <td>
+                        @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(item.VehicleType))
+                    </td>
+                    <td>
+                        @if (parkingSpot != null)
+                        {
+                            @Html.DisplayFor(modelItem => parkingSpot.CheckInTime)
+                        }
+                        else if (bookedParkingSpot != null)
+                        {
+                            @Html.DisplayFor(modelItem => bookedParkingSpot.CheckInTime)
+                        }
+                    </td>
+                    <td>
+                        @if (parkingSpot != null)
+                        {
+                            @Html.DisplayFor(modelItem => parkingSpot.Label)
+                        }
+                        else if (bookedParkingSpot != null)
+                        {
+                            @Html.DisplayFor(modelItem => bookedParkingSpot.Label)
+                        }
+                    </td>
+                    <td>
+                        @if (parkingSpot != null)
+                        {
+                            @parkingSpot.DisplayFee()
+                        }
+                        else if (bookedParkingSpot != null)
+                        {
+                            @bookedParkingSpot.DisplayMonthlyFee()
+                        }
+                    </td>
+                    <td>
+                        @* Custom actions, according to the parked/unparked status of the vehicle *@
+                        @if (item.ParkingSpotID == null)
+                        {
+                            if (bookedParkingSpot == null)
+                            {
+
+                                @Html.ActionLink("Check in",
+                                                 "CheckInAVehicle",
+                                                 new { vehicleId = item.ID })
+                                <text> | </text>
+                                @Html.ActionLink("Book a parking spot",
+                                                 "BookAParkingSpotForAVehicle",
+                                                 "Vehicles",
+                                                 new { vehicleId = item.ID },
+                                                 null)
+                                <text> | </text>
+                                @Html.ActionLink("Edit",
+                                                 "Edit",
+                                                 "Vehicles",
+                                                 new { id = item.ID },
+                                                 null)
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Unbook parking spot",
+                                                 "UnbookAParkingSpot",
+                                                 new
+                                                 {
+                                                     vehicleId = item.ID
+                                                 })
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Check out", "CheckOutAVehicle", new { vehicleId = item.ID })
+                        }
+                        | @Html.ActionLink("Details", "Details", "Vehicles", new { id = item.ID }, null)
+                        @if (bookedParkingSpot == null && parkingSpot == null)
+                        {
+                            <text> | @Html.ActionLink("Delete", "Delete", "Vehicles", new { id = item.ID }, null)</text>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
