@@ -7,13 +7,13 @@ namespace MVCGarage.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CheckIns : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CheckIns));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706131009204_CheckIns"; }
+            get { return "201706131250244_Initial"; }
         }
         
         string IMigrationMetadata.Source
