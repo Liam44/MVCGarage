@@ -1,4 +1,5 @@
-﻿using MVCGarage.Repositories;
+﻿using MVCGarage.Models;
+using MVCGarage.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace MVCGarage.Controllers
         OwnersRepository owners = new OwnersRepository();
         VehiclesRepository vehicles = new VehiclesRepository();
 
-        public void AssignOwnerToVehicle(int OwnerID, int VehicleID)
-        { 
-            
-        }
+        //public Owner GetOwnerByVehicle(int vID)
+        //{
+        //    return owners.GetOwnerByVehicleID(vID);
+        //}
     }
 }

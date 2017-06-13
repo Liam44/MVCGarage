@@ -28,6 +28,10 @@ namespace MVCGarage.DataAccess
             modelBuilder.Entity<Vehicle>()
                         .HasRequired<VehicleType>(vt => vt.VehicleType)
                         .WithMany(v => v.Vehicles);
+            //One-To-Many
+            modelBuilder.Entity<Vehicle>()
+                        .HasRequired<Owner>(o => o.Owner)
+                        .WithMany(v => v.Vehicles);
         }
     }
 }

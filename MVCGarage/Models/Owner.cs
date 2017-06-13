@@ -9,7 +9,6 @@ namespace MVCGarage.Models
     public class Owner
     {
         [Key]
-        [Display(Name = "Owner ID")]
         public int ID { get; set; }
 
         [Required]

@@ -10,7 +10,7 @@ namespace MVCGarage.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(MVCGarage.DataAccess.GarageContext context)

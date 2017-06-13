@@ -165,10 +165,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706131009204_CheckIns.cs" />
-    <Compile Include="Migrations\201706131009204_CheckIns.Designer.cs">
-      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CheckIn.cs" />
     <Compile Include="Models\Owner.cs" />
@@ -265,7 +261,6 @@
     <Content Include="Views\Vehicles\UnbookParkingSpot.cshtml" />
     <Content Include="Views\Garage\Search.cshtml" />
     <Content Include="Views\Garage\Index.cshtml" />
-    <Content Include="Views\Owners\Index.cshtml" />
     <Content Include="Views\VehicleTypes\Create.cshtml" />
     <Content Include="Views\VehicleTypes\Delete.cshtml" />
     <Content Include="Views\VehicleTypes\Details.cshtml" />
@@ -274,6 +269,11 @@
     <Content Include="Views\ParkingSpots\Create.cshtml" />
     <Content Include="Views\CheckIns\VehicleHistoric.cshtml" />
     <Content Include="Views\CheckIns\ParkingSpotHistoric.cshtml" />
+    <Content Include="Views\Owners\Delete.cshtml" />
+    <Content Include="Views\Owners\Details.cshtml" />
+    <Content Include="Views\Owners\Edit.cshtml" />
+    <Content Include="Views\Owners\Create.cshtml" />
+    <Content Include="Views\Owners\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -289,11 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706131009204_CheckIns.resx">
-      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
