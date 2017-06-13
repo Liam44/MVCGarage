@@ -27,12 +27,12 @@ namespace MVCGarage.Models
 
         public string DisplayFee()
         {
-            return string.Format("{0:N2}/min.", GetFee());
+            return string.Format("{0:C}/min.", GetFee());
         }
 
         public string DisplayMonthlyFee()
         {
-            return string.Format("{0:N2}/month", MonthlyFee());
+            return string.Format("{0:C}/month", MonthlyFee());
         }
 
         [Display(Name = "Monthly fee")]
@@ -43,8 +43,10 @@ namespace MVCGarage.Models
 
         // Navigation property - Allows the 1..1 relation to the "VehicleType" table
         [ForeignKey("VehicleType")]
+        [Display(Name="Vehicle Type")]
         public int VehicleTypeID { get; set; }
 
+        [Display(Name = "Vehicle Type")]
         public virtual VehicleType VehicleType { get; set; }
         // --- //
 

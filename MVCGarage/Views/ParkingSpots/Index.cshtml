@@ -98,6 +98,7 @@
                         <text> | @Html.ActionLink("Delete", "Delete", new { id = item.ParkingSpot.ID })
                         </text>
                     }
+                    | @Html.ActionLink("View historic", "ParkingSpotHistoric", "CheckIns", new { parkingSpotId = item.ParkingSpot.ID }, null)
                 </td>
             </tr>
         }

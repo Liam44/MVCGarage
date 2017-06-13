@@ -21,13 +21,18 @@ namespace MVCGarage.Controllers
             return vehicles.Vehicle(vehicleId);
         }
 
+        public ParkingSpot ParkingSpot(int? parkingSpotId)
+        {
+            return parkingSpots.ParkingSpot(parkingSpotId);
+        }
+
         public List<Vehicle> BookedSpotsVehicles()
         {
             List<Vehicle> bookedSpotsVehicles = new List<Vehicle>();
 
             foreach (CheckIn checkIn in checkIns.CheckIns())
             {
-                if (checkIn.Booked && !checkIn.Free)
+                if (checkIn.Booked && checkIn.CheckOutTime == null)
                     bookedSpotsVehicles.Add(vehicles.Vehicle(checkIn.VehicleID));
             }
 

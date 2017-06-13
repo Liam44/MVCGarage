@@ -19,8 +19,10 @@ namespace MVCGarage.Models
 
         // Navigation property - Allows the 1..1 relation to the "VehicleType" table
         [ForeignKey("VehicleType")]
+        [Display(Name = "Vehicle Type")]
         public int VehicleTypeID { get; set; }
 
+        [Display(Name = "Vehicle Type")]
         public virtual VehicleType VehicleType { get; set; }
         // --- //
 

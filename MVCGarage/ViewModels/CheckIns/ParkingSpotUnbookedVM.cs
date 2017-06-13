@@ -3,11 +3,9 @@ using System;
 
 namespace MVCGarage.ViewModels.CheckIns
 {
-    public class ParkingSpotUnbooked
+    public class ParkingSpotUnbookedVM
     {
         public CheckIn CheckIn { get; set; }
-        public DateTime CheckOutTime { get; set; }
         public int NbMonths { get; set; }
-        public double TotalAmount { get; set; }
     }
 }

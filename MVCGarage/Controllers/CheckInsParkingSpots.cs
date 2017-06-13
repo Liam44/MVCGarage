@@ -31,7 +31,7 @@ namespace MVCGarage.Controllers
             return parkingSpots.ParkingSpots(vehicleTypeId).Select(p => new
             {
                 ParkingSpot = p,
-                CheckIns = checkIns.CheckIns().Where(ch => !ch.Free && ch.ParkingSpotID == p.ID)
+                CheckIns = checkIns.CheckIns().Where(ch => ch.CheckOutTime == null && ch.ParkingSpotID == p.ID)
             })
             .Where(chp => chp.CheckIns.Count() == 0)
             .Select(chp => chp.ParkingSpot);
@@ -42,12 +42,12 @@ namespace MVCGarage.Controllers
             return parkingSpots.Select(p => new
             {
                 ParkingSpot = p,
-                CheckIn = checkIns.CheckIns().FirstOrDefault(ch => !ch.Free && ch.ParkingSpotID == p.ID)
+                CheckIn = checkIns.CheckIns().FirstOrDefault(ch => ch.CheckOutTime == null && ch.ParkingSpotID == p.ID)
             }).Select(vch => new InnerJoinResult
             {
                 ParkingSpot = vch.ParkingSpot,
                 CheckIn = vch.CheckIn,
-                Vehicle = vch.CheckIn?.Vehicle
+                Vehicle = vch.CheckIn == null ? null : vch.CheckIn.Vehicle
             });
         }
 

@@ -49,7 +49,7 @@ namespace MVCGarage.Repositories
         /// <returns></returns>
         public CheckIn CheckInByParkingSpot(int parkingSpotId)
         {
-            return CheckIns().SingleOrDefault(ch => ch.ParkingSpotID == parkingSpotId && !ch.Free);
+            return CheckIns().SingleOrDefault(ch => ch.ParkingSpotID == parkingSpotId && ch.CheckOutTime == null);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MVCGarage.Repositories
         /// <returns></returns>
         public CheckIn CheckInByVehicle(int vehicleId)
         {
-            return CheckIns().SingleOrDefault(ch => ch.VehicleID == vehicleId && !ch.Free);
+            return CheckIns().SingleOrDefault(ch => ch.VehicleID == vehicleId && ch.CheckOutTime == null);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace MVCGarage.Repositories
         /// <returns></returns>
         public IEnumerable<CheckIn> CheckInsByParkingSpot(int parkingSpotId)
         {
-            return CheckIns().Where(ch => ch.Free && ch.ParkingSpotID == parkingSpotId);
+            return CheckIns().Where(ch => ch.ParkingSpotID == parkingSpotId);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace MVCGarage.Repositories
         /// <returns></returns>
         public IEnumerable<CheckIn> CheckInsByVehicle(int vehicleId)
         {
-            return CheckIns().Where(ch => ch.Free && ch.VehicleID == vehicleId);
+            return CheckIns().Where(ch => ch.VehicleID == vehicleId);
         }
 
         public void Add(CheckIn checkIn)
@@ -98,7 +98,6 @@ namespace MVCGarage.Repositories
         {
             CheckIn result = new CheckIn
             {
-                Free = false,
                 Booked = false,
                 VehicleID = vehicleId,
                 ParkingSpotID = parkingSpotId,
@@ -110,21 +109,23 @@ namespace MVCGarage.Repositories
             return result;
         }
 
-        public void CheckOut(int id)
+        public CheckIn CheckOut(int id, DateTime now, double totalAmount)
         {
             CheckIn checkIn = CheckIn(id);
             if (checkIn != null)
             {
-                checkIn.Free = true;
+                checkIn.CheckOutTime = now;
+                checkIn.TotalAmount = totalAmount;
                 Edit(checkIn);
             }
+
+            return CheckIn(id);
         }
 
         public CheckIn Book(int vehicleId, int parkingSpotId)
         {
             CheckIn result = new CheckIn
             {
-                Free = false,
                 Booked = true,
                 VehicleID = vehicleId,
                 ParkingSpotID = parkingSpotId,
@@ -136,14 +137,17 @@ namespace MVCGarage.Repositories
             return result;
         }
 
-        public void Unbook(int id)
+        public CheckIn Unbook(int id, DateTime now, double totalAmount)
         {
             CheckIn checkIn = CheckIn(id);
             if (checkIn != null)
             {
-                checkIn.Free = true;
+                checkIn.CheckOutTime = now;
+                checkIn.TotalAmount = totalAmount;
                 Edit(checkIn);
             }
+
+            return CheckIn(id);
         }
 
         private void SaveChanges()

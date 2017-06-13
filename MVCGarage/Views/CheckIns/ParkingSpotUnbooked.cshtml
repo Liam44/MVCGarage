@@ -1,4 +1,5 @@
-﻿@model MVCGarage.ViewModels.CheckIns.ParkingSpotUnbooked
+﻿@model MVCGarage.ViewModels.CheckIns.ParkingSpotUnbookedVM
+
 @{
     ViewBag.Title = "Unbook a Parking Spot";
 }
@@ -17,25 +18,20 @@
                 <th>
                     @Html.DisplayNameFor(model => model.CheckIn.Vehicle.RegistrationPlate)
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.CheckIn.Vehicle.Owner)
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.CheckIn.Vehicle.VehicleType)
                 </th>
             </tr>
-
             <tr>
                 <td>
                     @Html.DisplayFor(model => model.CheckIn.Vehicle.RegistrationPlate)
                 </td>
-
                 <td>
                     @Html.DisplayFor(model => model.CheckIn.Vehicle.Owner)
                 </td>
-
                 <td>
                     @Html.DisplayFor(model => model.CheckIn.Vehicle.VehicleType.Type)
                 </td>
@@ -51,11 +47,9 @@
                 <th>
                     @Html.DisplayName("Check in time")
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.CheckIn.ParkingSpot.Label)
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.CheckIn.ParkingSpot.Fee)
                 </th>
@@ -64,11 +58,9 @@
                 <td>
                     @Html.DisplayFor(model => model.CheckIn.CheckInTime)
                 </td>
-
                 <td>
                     @Html.DisplayFor(model => model.CheckIn.ParkingSpot.Label)
                 </td>
-
                 <td>
                     @Model.CheckIn.ParkingSpot.DisplayMonthlyFee()
                 </td>
@@ -82,16 +74,16 @@
         <table>
             <tr>
                 <th>
-                    @Html.DisplayName("Check in time:")
+                    @Html.DisplayName("Check in time")
                 </th>
                 <th>
-                    @Html.DisplayName("Check out time:")
+                    @Html.DisplayName("Check out time")
                 </th>
                 <th>
-                    @Html.DisplayName("Total time:")
+                    @Html.DisplayName("Total time")
                 </th>
                 <th>
-                    @Html.DisplayName("Total amount:")
+                    @Html.DisplayName("Total amount")
                 </th>
             </tr>
             <tr>
@@ -99,21 +91,20 @@
                     @Html.DisplayFor(model => Model.CheckIn.CheckInTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => Model.CheckOutTime)
+                    @Html.DisplayFor(model => Model.CheckIn.CheckOutTime)
                 </td>
                 <td>
                     @{ string s = string.Empty;
-                        if (Model.NbMonths > 1)
-                        { s = "s"; }
+                     if (Model.NbMonths > 1)
+                     { s = "s"; }
                     }
                     @Html.DisplayName(string.Format("{0} month{1}", Model.NbMonths, s))
                 </td>
                 <td>
                     @Html.DisplayFor(model => Model.NbMonths) *
                     @Html.DisplayName(string.Format("{0:N2}", Model.CheckIn.ParkingSpot.MonthlyFee())) =
-                    @Html.DisplayName(string.Format("{0:N2}", Model.TotalAmount))
+                    @Html.DisplayName(string.Format("{0:C}", Model.CheckIn.TotalAmount))
                 </td>
-
             </tr>
         </table>
     </div>

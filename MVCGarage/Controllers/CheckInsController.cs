@@ -3,7 +3,9 @@ using MVCGarage.Repositories;
 using MVCGarage.ViewModels.CheckIns;
 using MVCGarage.ViewModels.ParkingSpots;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -12,118 +14,101 @@ namespace MVCGarage.Controllers
     public class CheckInsController : Controller
     {
         private CheckInsRepository db = new CheckInsRepository();
-        private VehiclesRepository vehicles = new VehiclesRepository();
-        private ParkingSpotsRepository parkingSpots = new ParkingSpotsRepository();
 
-        //// GET: CheckIns
-        //public ActionResult Index()
-        //{
-        //    var checkIns = db.CheckIns.Include(c => c.ParkingSpot).Include(c => c.Vehicle);
-        //    return View(checkIns.ToList());
-        //}
+        private IEnumerable<CheckIn> Sort(IEnumerable<CheckIn> list, string sortOrder)
+        {
+            ViewBag.CheckInIDSortParam = string.IsNullOrEmpty(sortOrder) ? "id_desc" : "id_asc";
 
-        //// GET: CheckIns/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    CheckIn checkIn = db.CheckIns.Find(id);
-        //    if (checkIn == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(checkIn);
-        //}
+            ViewBag.ParkingSpotLabelSortParam = sortOrder == "label_asc" ? "label_desc" : "label_asc";
 
-        //// GET: CheckIns/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.ParkingSpotID = new SelectList(db.ParkingSpots, "ID", "Label");
-        //    ViewBag.VehicleID = new SelectList(db.Vehicles, "ID", "Owner");
-        //    return View();
-        //}
+            ViewBag.VehicleRegNumberSortParam = sortOrder == "regnum_asc" ? "regnum_desc" : "regnum_asc";
+            ViewBag.VehicleOwnerSortParam = sortOrder == "owner_asc" ? "owner_desc" : "owner_asc";
 
-        //// POST: CheckIns/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "ID,CheckInTime,Booked,Free,ParkingSpotID,VehicleID")] CheckIn checkIn)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.CheckIns.Add(checkIn);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
+            ViewBag.CheckInTimeSortParam = sortOrder == "checkintime_asc" ? "checkintime_desc" : "checkintime_asc";
+            ViewBag.CheckOutTimeSortParam = sortOrder == "checkouttime_asc" ? "checkouttime_desc" : "checkouttime_asc";
+            ViewBag.TotalAmountSortParam = sortOrder == "totalamount_asc" ? "totalamount_desc" : "totalamount_asc";
+            ViewBag.StatusSortParam = sortOrder == "status_asc" ? "status_desc" : "status_asc";
 
-        //    ViewBag.ParkingSpotID = new SelectList(db.ParkingSpots, "ID", "Label", checkIn.ParkingSpotID);
-        //    ViewBag.VehicleID = new SelectList(db.Vehicles, "ID", "Owner", checkIn.VehicleID);
-        //    return View(checkIn);
-        //}
+            switch (sortOrder)
+            {
+                case "id_asc":
+                    list = list.OrderBy(ch => ch.ID);
+                    break;
+                case "label_asc":
+                    list = list.OrderBy(ch => ch.ParkingSpot.Label);
+                    break;
+                case "label_desc":
+                    list = list.OrderByDescending(ch => ch.ParkingSpot.Label);
+                    break;
+                case "regnum_asc":
+                    list = list.OrderBy(ch => ch.Vehicle.RegistrationPlate);
+                    break;
+                case "regnum_desc":
+                    list = list.OrderByDescending(ch => ch.Vehicle.RegistrationPlate);
+                    break;
+                case "owner_asc":
+                    list = list.OrderBy(ch => ch.Vehicle.Owner);
+                    break;
+                case "owner_desc":
+                    list = list.OrderByDescending(ch => ch.Vehicle.Owner);
+                    break;
+                case "checkintime_asc":
+                    list = list.OrderBy(ch => ch.CheckInTime);
+                    break;
+                case "checkintime_desc":
+                    list = list.OrderByDescending(ch => ch.CheckInTime);
+                    break;
+                case "checkouttime_asc":
+                    list = list.OrderBy(ch => ch.CheckOutTime);
+                    break;
+                case "checkouttime_desc":
+                    list = list.OrderByDescending(ch => ch.CheckOutTime);
+                    break;
+                case "totalamount_asc":
+                    list = list.OrderBy(ch => ch.TotalAmount);
+                    break;
+                case "totalamount_desc":
+                    list = list.OrderByDescending(ch => ch.TotalAmount);
+                    break;
+                case "status_asc":
+                    list = list.OrderBy(ch => ch.Status());
+                    break;
+                case "status_desc":
+                    list = list.OrderBy(ch => ch.Status());
+                    break;
+                default:
+                    list = list.OrderByDescending(ch => ch.ID);
+                    break;
+            }
 
-        //// GET: CheckIns/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    CheckIn checkIn = db.CheckIns.Find(id);
-        //    if (checkIn == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.ParkingSpotID = new SelectList(db.ParkingSpots, "ID", "Label", checkIn.ParkingSpotID);
-        //    ViewBag.VehicleID = new SelectList(db.Vehicles, "ID", "Owner", checkIn.VehicleID);
-        //    return View(checkIn);
-        //}
+            return list;
+        }
 
-        //// POST: CheckIns/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,CheckInTime,Booked,Free,ParkingSpotID,VehicleID")] CheckIn checkIn)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(checkIn).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.ParkingSpotID = new SelectList(db.ParkingSpots, "ID", "Label", checkIn.ParkingSpotID);
-        //    ViewBag.VehicleID = new SelectList(db.Vehicles, "ID", "Owner", checkIn.VehicleID);
-        //    return View(checkIn);
-        //}
+        [HttpGet]
+        public ActionResult VehicleHistoric(int? vehicleId, string sortOrder)
+        {
+            if (vehicleId == null)
+                return RedirectToAction("Index", "Garage");
 
-        //// GET: CheckIns/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    CheckIn checkIn = db.CheckIns.Find(id);
-        //    if (checkIn == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(checkIn);
-        //}
+            return View(new VehicleHistoricVM
+            {
+                Vehicle = new GarageController().Vehicle(vehicleId),
+                CheckIns = Sort(db.CheckInsByVehicle((int)vehicleId), sortOrder).ToList()
+            });
+        }
 
-        //// POST: CheckIns/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    CheckIn checkIn = db.CheckIns.Find(id);
-        //    db.CheckIns.Remove(checkIn);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        [HttpGet]
+        public ActionResult ParkingSpotHistoric(int? parkingSpotId, string sortOrder)
+        {
+            if (parkingSpotId == null)
+                return RedirectToAction("Index", "Garage");
+
+            return View(new ParkingSpotHistoricVM
+            {
+                ParkingSpot = new GarageController().ParkingSpot(parkingSpotId),
+                CheckIns = Sort(db.CheckInsByParkingSpot((int)parkingSpotId), sortOrder).ToList()
+            });
+        }
 
         [HttpGet]
         public ActionResult VehicleCheckedIn(SelectAParkingSpotVM viewModel)
@@ -144,7 +129,7 @@ namespace MVCGarage.Controllers
                                         });
 
             // Check in the vehicle ID to the parking spot
-            ParkingSpot parkingSpot = parkingSpots.ParkingSpot(viewModel.ParkingSpotID);
+            ParkingSpot parkingSpot = new GarageController().ParkingSpot(viewModel.ParkingSpotID);
 
             if (parkingSpot == null)
                 return RedirectToAction("CheckInAVehicle", new
@@ -165,27 +150,25 @@ namespace MVCGarage.Controllers
         public ActionResult VehicleCheckedOut(int? vehicleId)
         {
             if (vehicleId == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Garage");
 
             CheckIn checkIn = new CheckInsVehicles().CheckInByVehicle((int)vehicleId);
 
             if (checkIn == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Garage");
 
             // Check out the vehicle ID to the parking spot
             DateTime now = DateTime.Now;
             int nbMinutes = (int)Math.Truncate((now - (DateTime)checkIn.CheckInTime).TotalMinutes) + 1;
             double totalAmount = nbMinutes * checkIn.ParkingSpot.GetFee();
 
-            db.CheckOut(checkIn.ID);
+            checkIn = db.CheckOut(checkIn.ID, now, totalAmount);
 
             // Displays the bill
             return View(new VehicleCheckedOutVM
             {
                 CheckIn = checkIn,
-                NbMinutes = nbMinutes,
-                CheckOutTime = now,
-                TotalAmount = totalAmount
+                NbMinutes = nbMinutes
             });
         }
 
@@ -199,7 +182,7 @@ namespace MVCGarage.Controllers
             // Check in the vehicle ID to the parking spot
             CheckIn checkIn = db.Book(viewModel.VehicleID, viewModel.ParkingSpotID);
             checkIn.Vehicle = new GarageController().Vehicle(viewModel.VehicleID);
-            checkIn.ParkingSpot = parkingSpots.ParkingSpot(viewModel.ParkingSpotID);
+            checkIn.ParkingSpot = new GarageController().ParkingSpot(viewModel.ParkingSpotID);
 
             // Displays the chosen parking spot
             return View(checkIn);
@@ -209,27 +192,25 @@ namespace MVCGarage.Controllers
         public ActionResult ParkingSpotUnbooked(int? vehicleId)
         {
             if (vehicleId == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Garage");
 
             CheckIn checkIn = new CheckInsVehicles().CheckInByVehicle((int)vehicleId);
 
             if (checkIn == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Garage");
 
             // Check out the vehicle ID to the parking spot
             DateTime now = DateTime.Now;
             int nbMonths = (int)Math.Truncate((now - (DateTime)checkIn.CheckInTime).TotalDays / 30) + 1;
             double totalAmount = nbMonths * checkIn.ParkingSpot.MonthlyFee();
 
-            db.CheckOut(checkIn.ID);
+            checkIn = db.CheckOut(checkIn.ID, now, totalAmount);
 
             // Displays the bill
-            return View(new ParkingSpotUnbooked
+            return View(new ParkingSpotUnbookedVM
             {
                 CheckIn = checkIn,
-                NbMonths = nbMonths,
-                CheckOutTime = now,
-                TotalAmount = totalAmount
+                NbMonths = nbMonths
             });
         }
 

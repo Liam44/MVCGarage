@@ -162,6 +162,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706131009204_CheckIns.cs" />
+    <Compile Include="Migrations\201706131009204_CheckIns.Designer.cs">
+      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CheckIn.cs" />
     <Compile Include="Models\Owner.cs" />
@@ -176,8 +180,10 @@
     <Compile Include="Repositories\ParkingSpotsRepository.cs" />
     <Compile Include="Repositories\VehiclesRepository.cs" />
     <Compile Include="Repositories\VehicleTypesRepository.cs" />
+    <Compile Include="ViewModels\CheckIns\VehicleHistoricVM.cs" />
+    <Compile Include="ViewModels\CheckIns\ParkingSpotHistoricVM.cs" />
     <Compile Include="ViewModels\Shared\DisplayVehiclesVM.cs" />
-    <Compile Include="ViewModels\CheckIns\ParkingSpotUnbooked.cs" />
+    <Compile Include="ViewModels\CheckIns\ParkingSpotUnbookedVM.cs" />
     <Compile Include="ViewModels\Garage\SearchResultsVM.cs" />
     <Compile Include="ViewModels\Shared\DetailsParkingSpotVM.cs" />
     <Compile Include="ViewModels\ParkingSpots\SelectAParkingSpotVM.cs" />
@@ -263,6 +269,8 @@
     <Content Include="Views\VehicleTypes\Edit.cshtml" />
     <Content Include="Views\VehicleTypes\Index.cshtml" />
     <Content Include="Views\ParkingSpots\Create.cshtml" />
+    <Content Include="Views\CheckIns\VehicleHistoric.cshtml" />
+    <Content Include="Views\CheckIns\ParkingSpotHistoric.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -278,6 +286,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706131009204_CheckIns.resx">
+      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

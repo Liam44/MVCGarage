@@ -199,7 +199,7 @@ namespace MVCGarage.Controllers
             return View(new SelectAVehicleVM
             {
                 ErrorMessage = errorMessage,
-                Vehicles = new CheckInsVehicles().UnparkedVehicles()
+                Vehicles = new CheckInsVehicles().UnparkedVehicles().ToList()
             });
         }
 
