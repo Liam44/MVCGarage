@@ -19,5 +19,7 @@ namespace MVCGarage.Models
         [StringLength(1, ErrorMessage = "Please enter M for male and F for female")]
         public string Gender { get; set; }
         public string LicenseNumber { get; set; }
+
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

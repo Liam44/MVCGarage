@@ -47,7 +47,7 @@ namespace MVCGarage.Controllers
             {
                 ParkingSpot = vch.ParkingSpot,
                 CheckIn = vch.CheckIn,
-                Vehicle = vch.CheckIn?.Vehicle
+                Vehicle = vch.CheckIn == null ? null : vch.CheckIn.Vehicle
             });
         }
 
