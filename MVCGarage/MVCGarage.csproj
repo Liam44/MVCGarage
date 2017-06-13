@@ -154,6 +154,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InnerJoinResult.cs" />
     <Compile Include="Controllers\OwnersController.cs" />
+    <Compile Include="Controllers\OwnersVehicles.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controllers\ParkingSpotsController.cs" />
     <Compile Include="Controllers\PopulateVehicleTypes.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />

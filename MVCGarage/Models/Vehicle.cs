@@ -12,7 +12,10 @@ namespace MVCGarage.Models
         public int ID { get; set; }
 
         [Display(Name = "Owner")]
-        public string Owner { get; set; }
+        public virtual Owner Owner { get; set; }
+
+        [ForeignKey("Owner")]
+        public int OwnerID { get; set; }
 
         [Display(Name = "Regitration plate")]
         public string RegistrationPlate { get; set; }

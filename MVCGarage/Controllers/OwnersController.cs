@@ -71,24 +71,22 @@ namespace MVCGarage.Controllers
         }
 
         // GET: Owners
-        public ActionResult Index(string sortOrder, bool filterAvailableOnly = false)
-        {
-            IEnumerable<Owner> owners = null;
+        //public ActionResult Index(string sortOrder, bool filterAvailableOnly = false)
+        //{
+        //    IEnumerable<Owner> owners = null;
 
-            owners = db.GetAllOwners();
+        //    owners = db.GetAllOwners();
 
-            List<DetailsParkingSpotVM> viewModel = new List<DetailsParkingSpotVM>();
+        //    foreach (Owner owner in Sort(list, sortOrder).ToList())
+        //        viewModel.Add(new DetailsParkingSpotVM
+        //        {
+        //            Availability = Availability(parkingSpot),
+        //            ParkingSpot = parkingSpot,
+        //            Vehicle = new GarageController().Vehicle(parkingSpot.VehicleID)
+        //        });
 
-            //foreach (ParkingSpot parkingSpot in Sort(parkingSpots, sortOrder).ToList())
-            //    viewModel.Add(new DetailsParkingSpotVM
-            //    {
-            //        Availability = Availability(parkingSpot),
-            //        ParkingSpot = parkingSpot,
-            //        Vehicle = new GarageController().Vehicle(parkingSpot.VehicleID)
-            //    });
-
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
 
         // GET: Owners/Details/5
         public ActionResult Details(int? id)
