@@ -10,7 +10,7 @@ namespace MVCGarage.Models
         public int ID { get; set; }
 
         [Display(Name = "Vehicle Type")]
-        [Required]
+        [Required] 
         public string Type { get; set; }
 
         // Navigation property - Allows the 1..* relation to the "ParkingSpot" table
