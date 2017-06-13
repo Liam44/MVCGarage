@@ -10,29 +10,6 @@ namespace MVCGarage.Repositories
     public class ParkingSpotsRepository : IDisposable
     {
         private GarageContext db = new GarageContext();
-        private Dictionary<int, double> defaultFees = new Dictionary<int, double> {
-        {1, 0.20 },
-        {2, 0.50 },
-        {3, 0.80 },
-        {4, 1.00 }};
-
-        public Dictionary<VehicleType, double> DefaultFees()
-        {
-            Dictionary<VehicleType, double> result = new Dictionary<VehicleType, double>();
-
-            foreach (int vehicleTypeId in defaultFees.Keys)
-                result.Add(db.VehicleTypes.SingleOrDefault(vt => vt.ID == vehicleTypeId), defaultFees[vehicleTypeId]);
-
-            return result;
-        }
-
-        public double DefaultFee(int vehicleTypeId)
-        {
-            if (defaultFees.ContainsKey(vehicleTypeId))
-                return defaultFees[vehicleTypeId];
-            else
-                return 0;
-        }
 
         public IEnumerable<ParkingSpot> ParkingSpots()
         {

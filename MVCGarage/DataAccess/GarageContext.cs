@@ -10,6 +10,7 @@ namespace MVCGarage.DataAccess
     public class GarageContext : DbContext
     {
         public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<DefaultFee> DefaultFees { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<CheckIn> CheckIns { get; set; }
@@ -28,6 +29,10 @@ namespace MVCGarage.DataAccess
             modelBuilder.Entity<Vehicle>()
                         .HasRequired<VehicleType>(vt => vt.VehicleType)
                         .WithMany(v => v.Vehicles);
+
+            modelBuilder.Entity<DefaultFee>()
+                .HasRequired<VehicleType>(f => f.VehicleType)
+                .WithRequiredDependent(vt => vt.DefaultFee);
         }
     }
 }

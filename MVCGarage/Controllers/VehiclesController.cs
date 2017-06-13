@@ -31,7 +31,8 @@ namespace MVCGarage.Controllers
         // GET: Vehicles/Create
         public ActionResult Create(CreateVehicleVM viewModel)
         {
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes();
+            ViewBag.SelectOwners = PopulateSelectLists.PopulateOwners();
 
             if (viewModel.OriginActionName == null)
                 viewModel.OriginActionName = "DisplayAllVehicles";
@@ -47,7 +48,7 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Owner,RegistrationPlate,VehicleTypeID")] Vehicle vehicle,
+        public ActionResult Create([Bind(Include = "ID,OwnerID,RegistrationPlate,VehicleTypeID")] Vehicle vehicle,
                                    string originActionName,
                                    string originControllerName)
         {
@@ -56,7 +57,8 @@ namespace MVCGarage.Controllers
                 // Check that the registration plate is still unique
                 if (db.VehicleByRegistrationPlate(vehicle.RegistrationPlate) != null)
                 {
-                    ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+                    ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes(vehicle.VehicleTypeID);
+                    ViewBag.SelectOwners = PopulateSelectLists.PopulateOwners(vehicle.OwnerID);
 
                     return View(new CreateVehicleVM
                     {
@@ -76,7 +78,8 @@ namespace MVCGarage.Controllers
                 });
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes(vehicle.VehicleTypeID);
+            ViewBag.SelectOwners = PopulateSelectLists.PopulateOwners(vehicle.OwnerID);
 
             return View(new CreateVehicleVM
             {
@@ -99,7 +102,8 @@ namespace MVCGarage.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList(vehicle.VehicleTypeID);
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes(vehicle.VehicleTypeID);
+            ViewBag.SelectOwners = PopulateSelectLists.PopulateOwners(vehicle.OwnerID);
 
             return View(vehicle);
         }
@@ -109,13 +113,17 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Owner,RegistrationPlate,VehicleTypeID")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "ID,OwnerID,RegistrationPlate,VehicleTypeID")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
                 db.Edit(vehicle);
                 return RedirectToAction("DisplayAllVehicles", "Garage");
             }
+
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes(vehicle.VehicleTypeID);
+            ViewBag.SelectOwners = PopulateSelectLists.PopulateOwners(vehicle.OwnerID);
+
             return View(vehicle);
         }
 

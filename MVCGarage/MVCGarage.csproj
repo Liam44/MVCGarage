@@ -150,6 +150,7 @@
     <Compile Include="Controllers\CheckInsController.cs" />
     <Compile Include="Controllers\CheckInsParkingSpots.cs" />
     <Compile Include="Controllers\CheckInsVehicles.cs" />
+    <Compile Include="Controllers\DefaultFeesController.cs" />
     <Compile Include="Controllers\GarageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InnerJoinResult.cs" />
@@ -158,19 +159,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\ParkingSpotsController.cs" />
-    <Compile Include="Controllers\PopulateVehicleTypes.cs" />
+    <Compile Include="Controllers\PopulateSelectLists.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Controllers\VehicleTypesController.cs" />
     <Compile Include="DataAccess\GarageContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706131009204_CheckIns.cs" />
-    <Compile Include="Migrations\201706131009204_CheckIns.Designer.cs">
-      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
+    <Compile Include="Migrations\201706131250244_Initial.cs" />
+    <Compile Include="Migrations\201706131250244_Initial.Designer.cs">
+      <DependentUpon>201706131250244_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CheckIn.cs" />
+    <Compile Include="Models\DefaultFee.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingSpot.cs" />
     <Compile Include="Models\Vehicle.cs" />
@@ -178,6 +180,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DefaultFeesRepository.cs" />
     <Compile Include="Repositories\CheckInsRepository.cs" />
     <Compile Include="Repositories\OwnersRepository.cs" />
     <Compile Include="Repositories\ParkingSpotsRepository.cs" />
@@ -197,9 +200,9 @@
     <Compile Include="ViewModels\Vehicles\SelectAVehicleVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Garage.mdf" />
-    <Content Include="App_Data\Garage_log.ldf">
-      <DependentUpon>Garage.mdf</DependentUpon>
+    <Content Include="App_Data\_Garage.mdf" />
+    <Content Include="App_Data\_Garage_log.ldf">
+      <DependentUpon>_Garage.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-override.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -274,6 +277,11 @@
     <Content Include="Views\ParkingSpots\Create.cshtml" />
     <Content Include="Views\CheckIns\VehicleHistoric.cshtml" />
     <Content Include="Views\CheckIns\ParkingSpotHistoric.cshtml" />
+    <Content Include="Views\DefaultFees\Create.cshtml" />
+    <Content Include="Views\DefaultFees\Delete.cshtml" />
+    <Content Include="Views\DefaultFees\Details.cshtml" />
+    <Content Include="Views\DefaultFees\Edit.cshtml" />
+    <Content Include="Views\DefaultFees\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -291,8 +299,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706131009204_CheckIns.resx">
-      <DependentUpon>201706131009204_CheckIns.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706131250244_Initial.resx">
+      <DependentUpon>201706131250244_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

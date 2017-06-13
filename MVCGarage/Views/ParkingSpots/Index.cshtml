@@ -28,7 +28,7 @@
                 @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.VehicleTypeSortParam })
             </th>
             <th>
-                @{htmlName = @Html.DisplayNameFor(model => model.First().ParkingSpot.Fee).ToHtmlString();}
+                @{htmlName = @Html.DisplayNameFor(model => model.First().ParkingSpot.VehicleType.DefaultFee.Fee).ToHtmlString();}
                 @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.FeeSortParam })
             </th>
             <th></th>

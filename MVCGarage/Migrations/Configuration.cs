@@ -20,6 +20,16 @@ namespace MVCGarage.Migrations
             VehicleType truck = new VehicleType { Type = "Truck" };
             VehicleType bus = new VehicleType { Type = "Bus" };
 
+            DefaultFee carFee = new DefaultFee { VehicleType = car, Fee = 0.20 };
+            DefaultFee motorcycleFee = new DefaultFee { VehicleType = motorcycle, Fee = 0.50 };
+            DefaultFee truckFee = new DefaultFee { VehicleType = truck, Fee = 0.80 };
+            DefaultFee busFee = new DefaultFee { VehicleType = bus, Fee = 1.00 };
+
+            car.DefaultFee = carFee;
+            motorcycle.DefaultFee = motorcycleFee;
+            truck.DefaultFee = truckFee;
+            bus.DefaultFee = busFee;
+
             context.VehicleTypes.AddOrUpdate(vt => vt.ID,
                 car,
                 motorcycle,
@@ -35,13 +45,19 @@ namespace MVCGarage.Migrations
                 Wilhelm,
                 Liam);
 
+            context.DefaultFees.AddOrUpdate(df => df.ID,
+                carFee,
+                motorcycleFee,
+                truckFee,
+                busFee);
+
             context.ParkingSpots.AddOrUpdate(p => p.ID,
-                new ParkingSpot { Label = "101", VehicleType = car, Fee = 0.20 },
-                new ParkingSpot { Label = "102", VehicleType = car, Fee = 0.20 },
-                new ParkingSpot { Label = "103", VehicleType = motorcycle, Fee = 0.50 },
-                new ParkingSpot { Label = "104", VehicleType = motorcycle, Fee = 0.50 },
-                new ParkingSpot { Label = "201", VehicleType = truck, Fee = 0.80 },
-                new ParkingSpot { Label = "202", VehicleType = bus, Fee = 1.00 });
+                new ParkingSpot { Label = "101", VehicleType = car, Fee = carFee.Fee },
+                new ParkingSpot { Label = "102", VehicleType = car, Fee = carFee.Fee },
+                new ParkingSpot { Label = "103", VehicleType = motorcycle, Fee = motorcycleFee.Fee },
+                new ParkingSpot { Label = "104", VehicleType = motorcycle, Fee = motorcycleFee.Fee },
+                new ParkingSpot { Label = "201", VehicleType = truck, Fee = truckFee.Fee },
+                new ParkingSpot { Label = "202", VehicleType = bus, Fee = busFee.Fee });
 
             context.Vehicles.AddOrUpdate(v => v.ID,
                 new Vehicle { RegistrationPlate = "ABC123", VehicleType = car, Owner = Mike },
@@ -51,21 +67,6 @@ namespace MVCGarage.Migrations
                 new Vehicle { RegistrationPlate = "ABC127", VehicleType = car, Owner = Wilhelm },
                 new Vehicle { RegistrationPlate = "ABC128", VehicleType = truck, Owner = Liam },
                 new Vehicle { RegistrationPlate = "ABC129", VehicleType = bus, Owner = Mike });
-
-
-
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }

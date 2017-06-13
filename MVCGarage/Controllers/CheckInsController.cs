@@ -160,7 +160,7 @@ namespace MVCGarage.Controllers
             // Check out the vehicle ID to the parking spot
             DateTime now = DateTime.Now;
             int nbMinutes = (int)Math.Truncate((now - (DateTime)checkIn.CheckInTime).TotalMinutes) + 1;
-            double totalAmount = nbMinutes * checkIn.ParkingSpot.GetFee();
+            double totalAmount = nbMinutes * checkIn.ParkingSpot.VehicleType.DefaultFee.Fee;
 
             checkIn = db.CheckOut(checkIn.ID, now, totalAmount);
 

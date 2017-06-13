@@ -136,11 +136,11 @@ namespace MVCGarage.Controllers
         // GET: ParkingSpots/Create
         public ActionResult Create(CreateParkingSpotsVM viewModel)
         {
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes();
 
             return View(new CreateParkingSpotsVM
             {
-                DefaultFees = db.DefaultFees()
+                DefaultFees = new DefaultFeesRepository().DefaultFees().ToList()
             });
         }
 
@@ -151,31 +151,37 @@ namespace MVCGarage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Label,Fee,VehicleTypeID")] ParkingSpot parkingSpot)
         {
+            DefaultFeesRepository dfr = new DefaultFeesRepository();
+
             if (ModelState.IsValid)
             {
                 // Check that the label is still unique
                 if (db.ParkingSpotByIdentifiant(parkingSpot.Label) != null)
                 {
-                    ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+                    ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes();
 
                     return View(new CreateParkingSpotsVM
                     {
                         ParkingSpot = parkingSpot,
-                        DefaultFees = db.DefaultFees(),
+                        DefaultFees = dfr.DefaultFees(),
                         ErrorMessage = "A parking spot with the same identifiant already exists!"
                     });
                 }
 
                 if (parkingSpot.Fee == null)
-                    parkingSpot.Fee = db.DefaultFee(parkingSpot.VehicleTypeID);
+                    parkingSpot.Fee = dfr.DefaultFeeByVehicleTypeID(parkingSpot.VehicleTypeID).Fee;
 
                 db.Add(parkingSpot);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes();
 
-            return View(new CreateParkingSpotsVM { ParkingSpot = parkingSpot, DefaultFees = db.DefaultFees() });
+            return View(new CreateParkingSpotsVM
+            {
+                ParkingSpot = parkingSpot,
+                DefaultFees = dfr.DefaultFees()
+            });
         }
 
         // GET: ParkingSpots/Edit/5
@@ -191,7 +197,7 @@ namespace MVCGarage.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList(parkingSpot.VehicleTypeID);
+            ViewBag.SelectVehicleTypes = PopulateSelectLists.PopulateVehicleTypes(parkingSpot.VehicleTypeID);
             return View(parkingSpot);
         }
 
@@ -204,6 +210,9 @@ namespace MVCGarage.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (parkingSpot.Fee == null)
+                    parkingSpot.Fee = new DefaultFeesRepository().DefaultFeeByVehicleTypeID(parkingSpot.VehicleTypeID).Fee;
+
                 db.Edit(parkingSpot);
                 return RedirectToAction("Index");
             }

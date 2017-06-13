@@ -5,11 +5,11 @@ using System.Web.Mvc;
 
 namespace MVCGarage.Controllers
 {
-    public class PopulateVehicleTypes
+    public class PopulateSelectLists
     {
         static GarageContext db = new GarageContext();
 
-        public static List<SelectListItem> PopulateDropList(int? vehicleTypeId = null)
+        public static List<SelectListItem> PopulateVehicleTypes(int? vehicleTypeId = null)
         {
             List<SelectListItem> items = new List<SelectListItem>();
 
@@ -19,6 +19,21 @@ namespace MVCGarage.Controllers
                     Value = vehicleType.ID.ToString(),
                     Text = vehicleType.Type,
                     Selected = vehicleTypeId == vehicleType.ID
+                });
+
+            return items;
+        }
+
+        public static List<SelectListItem> PopulateOwners(int? ownerId = null)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            foreach (Owner owner in db.Owners)
+                items.Add(new SelectListItem
+                {
+                    Value = owner.ID.ToString(),
+                    Text = string.Format("{0} {1}", owner.Lname.ToUpper(), owner.Fname),
+                    Selected = ownerId == owner.ID
                 });
 
             return items;

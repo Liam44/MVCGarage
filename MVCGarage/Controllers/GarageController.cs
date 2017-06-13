@@ -137,7 +137,7 @@ namespace MVCGarage.Controllers
             else if (innerJoin.CheckIn.Booked)
                 return innerJoin.ParkingSpot.MonthlyFee();
             else
-                return innerJoin.ParkingSpot.GetFee();
+                return innerJoin.ParkingSpot.VehicleType.DefaultFee.Fee;
         }
 
         public ActionResult Index()

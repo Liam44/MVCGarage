@@ -51,17 +51,17 @@
         <hr />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ParkingSpot.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ParkingSpot.VehicleType.DefaultFee.Fee, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @{ Html.EnableClientValidation(false); }
                 @{
                     string toolTip = "Default fee values:";
                     toolTip += string.Format("{0}{1}{0}", Environment.NewLine, new string('-', 19));
-                    foreach (MVCGarage.Models.VehicleType vehicleType in Model.DefaultFees.Keys)
+                    foreach (MVCGarage.Models.DefaultFee defaultFee in Model.DefaultFees)
                     {
                         string text = string.Format("{0}: {1:N2}/min.",
-                                                    vehicleType.Type,
-                                                    Model.DefaultFees[vehicleType]);
+                                                    defaultFee.VehicleType.Type,
+                                                    defaultFee.Fee);
 
                         toolTip += string.Format("{0}{1}",
                                                  text,
@@ -70,7 +70,7 @@
                                                                new string('-', text.Length)));
                     }
                 }
-                @Html.EditorFor(model => model.ParkingSpot.Fee,
+                @Html.EditorFor(model => model.ParkingSpot.VehicleType.DefaultFee.Fee,
                                 new
                                 {
                                     htmlAttributes = new
@@ -81,7 +81,7 @@
                                     }
                                 })
                 @{ Html.EnableClientValidation(true); }
-                @Html.ValidationMessageFor(model => model.ParkingSpot.Fee, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ParkingSpot.VehicleType.DefaultFee.Fee, "", new { @class = "text-danger" })
             </div>
         </div>
 

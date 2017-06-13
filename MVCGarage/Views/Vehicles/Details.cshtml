@@ -31,7 +31,7 @@
                     @Html.DisplayFor(model => model.RegistrationPlate)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.Owner)
+                    @Html.DisplayName(string.Format("{0} {1} - {2}", Model.Owner.Lname.ToUpper(), Model.Owner.Fname, Model.Owner.LicenseNumber))
                 </td>
                 <td>
                     @Html.DisplayFor(model => model.VehicleType.Type)
