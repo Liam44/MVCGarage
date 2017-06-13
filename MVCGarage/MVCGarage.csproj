@@ -156,22 +156,13 @@
     <Compile Include="Controllers\ParkingSpotsController.cs" />
     <Compile Include="Controllers\PopulateVehicleTypes.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Controllers\VehicleTypesController.cs" />
     <Compile Include="DataAccess\GarageContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706121352130_Initial.cs" />
-    <Compile Include="Migrations\201706121352130_Initial.Designer.cs">
-      <DependentUpon>201706121352130_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706121403058_Initial1.cs" />
-    <Compile Include="Migrations\201706121403058_Initial1.Designer.cs">
-      <DependentUpon>201706121403058_Initial1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CheckIn.cs" />
-    <Compile Include="Models\EnumHelper.cs" />
-    <Compile Include="Models\ETypeVehicle.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingSpot.cs" />
     <Compile Include="Models\Vehicle.cs" />
@@ -183,6 +174,7 @@
     <Compile Include="Repositories\OwnersRepository.cs" />
     <Compile Include="Repositories\ParkingSpotsRepository.cs" />
     <Compile Include="Repositories\VehiclesRepository.cs" />
+    <Compile Include="Repositories\VehicleTypeRepository.cs" />
     <Compile Include="ViewModels\Shared\DisplayVehiclesVM.cs" />
     <Compile Include="ViewModels\CheckIns\ParkingSpotUnbooked.cs" />
     <Compile Include="ViewModels\Garage\SearchResultsVM.cs" />
@@ -200,10 +192,6 @@
     <Content Include="App_Data\Garage.mdf" />
     <Content Include="App_Data\Garage_log.ldf">
       <DependentUpon>Garage.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\_Garage.mdf" />
-    <Content Include="App_Data\_Garage_log.ldf">
-      <DependentUpon>_Garage.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-override.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -271,6 +259,11 @@
     <Content Include="Views\Garage\Search.cshtml" />
     <Content Include="Views\Garage\Index.cshtml" />
     <Content Include="Views\Owners\Index.cshtml" />
+    <Content Include="Views\VehicleTypes\Create.cshtml" />
+    <Content Include="Views\VehicleTypes\Delete.cshtml" />
+    <Content Include="Views\VehicleTypes\Details.cshtml" />
+    <Content Include="Views\VehicleTypes\Edit.cshtml" />
+    <Content Include="Views\VehicleTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -286,14 +279,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706121352130_Initial.resx">
-      <DependentUpon>201706121352130_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706121403058_Initial1.resx">
-      <DependentUpon>201706121403058_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
