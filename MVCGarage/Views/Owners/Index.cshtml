@@ -17,16 +17,20 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Fname)
+                @{string htmlName = @Html.DisplayNameFor(model => model.Fname).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.FnameSortParam })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lname)
+                @{htmlName = @Html.DisplayNameFor(model => model.Lname).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.LnameSortParam })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+                @{htmlName = @Html.DisplayNameFor(model => model.Gender).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.GenderSortParam })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LicenseNumber)
+                @{htmlName = @Html.DisplayNameFor(model => model.LicenseNumber).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.LiNumSortParam })
             </th>
             <th></th>
         </tr>
