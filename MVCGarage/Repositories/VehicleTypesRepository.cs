@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MVCGarage.DataAccess;
 using MVCGarage.Models;
 using System.Data.Entity;
@@ -22,15 +21,26 @@ namespace MVCGarage.Repositories
             return db.VehicleTypes.Find(id);
         }
 
-        public void Add(VehicleType Type)
+        public void Add(VehicleType type)
         {
-            db.VehicleTypes.Add(Type);
+            db.VehicleTypes.Add(type);
             db.SaveChanges();
         }
 
         public void Delete(int typeId)
         {
             db.VehicleTypes.Remove(VehicleID(typeId));
+            db.SaveChanges();
+        }
+
+        public void Edit(VehicleType type)
+        {
+            db.Entry(type).State = EntityState.Modified;
+            SaveChanges();
+        }
+
+        private void SaveChanges()
+        {
             db.SaveChanges();
         }
 
