@@ -39,7 +39,7 @@ namespace MVCGarage.Repositories
         /// <returns></returns>
         public bool IsParked(int vehicleId)
         {
-            return CheckInByVehicle(vehicleId) == null;
+            return CheckInByVehicle(vehicleId) != null;
         }
 
         /// <summary>
@@ -94,16 +94,20 @@ namespace MVCGarage.Repositories
             SaveChanges();
         }
 
-        public void CheckIn(int vehicleId, int parkingSpotId)
+        public CheckIn CheckIn(int vehicleId, int parkingSpotId)
         {
-            Add(new CheckIn
+            CheckIn result = new CheckIn
             {
                 Free = false,
                 Booked = false,
                 VehicleID = vehicleId,
                 ParkingSpotID = parkingSpotId,
                 CheckInTime = DateTime.Now
-            });
+            };
+
+            Add(result);
+
+            return result;
         }
 
         public void CheckOut(int id)
@@ -116,16 +120,20 @@ namespace MVCGarage.Repositories
             }
         }
 
-        public void Book(int vehicleId, int parkingSpotId)
+        public CheckIn Book(int vehicleId, int parkingSpotId)
         {
-            Add(new CheckIn
+            CheckIn result = new CheckIn
             {
                 Free = false,
                 Booked = true,
                 VehicleID = vehicleId,
                 ParkingSpotID = parkingSpotId,
                 CheckInTime = DateTime.Now
-            });
+            };
+
+            Add(result);
+
+            return result;
         }
 
         public void Unbook(int id)

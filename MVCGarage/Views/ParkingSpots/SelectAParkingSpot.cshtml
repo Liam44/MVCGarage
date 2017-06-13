@@ -16,7 +16,7 @@
     if (Model.ParkingSpots.Count() == 0)
     {
         <div class="about-body-text" style="color: white; margin-top: 10em; text-align: center;">
-            <h4>All our parking spots for '@MVCGarage.Models.EnumHelper.GetDescriptionAttr(Model.SelectedVehicle.VehicleType)'</h4>
+            <h4>All our parking spots for '@Model.SelectedVehicle.VehicleType.Type'</h4>
             <h4>are unfortunately taken!</h4>
             <hr />
         </div>
@@ -50,7 +50,7 @@
                         </td>
 
                         <td>
-                            @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(Model.SelectedVehicle.VehicleType))
+                            @Html.DisplayFor(model => model.SelectedVehicle.VehicleType.Type)
                         </td>
                     </tr>
                 </table>

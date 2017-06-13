@@ -2,6 +2,8 @@
 using MVCGarage.Repositories;
 using MVCGarage.ViewModels.ParkingSpots;
 using MVCGarage.ViewModels.Vehicles;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -45,7 +47,7 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,VehicleType,Owner,RegistrationPlate,CheckInTime,ParkingSpot")] Vehicle vehicle,
+        public ActionResult Create([Bind(Include = "ID,Owner,RegistrationPlate,VehicleTypeID")] Vehicle vehicle,
                                    string originActionName,
                                    string originControllerName)
         {
@@ -97,7 +99,7 @@ namespace MVCGarage.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList();
+            ViewBag.SelectVehicleTypes = PopulateVehicleTypes.PopulateDropList(vehicle.VehicleTypeID);
 
             return View(vehicle);
         }
@@ -107,7 +109,7 @@ namespace MVCGarage.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,VehicleType,Owner,RegistrationPlate,CheckInTime,ParkingSpot")] Vehicle vehicle)
+        public ActionResult Edit([Bind(Include = "ID,Owner,RegistrationPlate,VehicleTypeID")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -144,12 +146,19 @@ namespace MVCGarage.Controllers
         [HttpGet]
         public ActionResult CheckInVehicle(SelectAVehicleVM viewModel, string errorMessage)
         {
+            List<Vehicle> unparkedVehicles = new CheckInsVehicles().UnparkedVehicles().ToList();
+
+            foreach (Vehicle vehicle in unparkedVehicles)
+            {
+                Vehicle vehicleTmp = vehicle;
+            }
+
             // Allows the user to select a vehicle in the list of already exiting vehicles
             // or to create a new one
             return View(new SelectAVehicleVM
             {
                 ErrorMessage = errorMessage,
-                Vehicles = new CheckInsVehicles().UnparkedVehicles(),
+                Vehicles = new CheckInsVehicles().UnparkedVehicles().ToList(),
                 VehicleID = viewModel.VehicleID,
             });
         }

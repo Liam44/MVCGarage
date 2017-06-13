@@ -66,37 +66,37 @@ namespace MVCGarage.Controllers
                     list = list.OrderByDescending(v => v.Owner);
                     break;
                 case "checkin_asc":
-                    list = InnerJoin(list)
-                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null || DateTime.Equals(v_ch_p.CheckIn.CheckInTime, null))
+                    list = new CheckInsVehicles().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenBy(v_ch_p => GetCheckInTime(v_ch_p.CheckIn))
                            .Select(v_ch_p => v_ch_p.Vehicle);
                     break;
                 case "checkin_desc":
-                    list = InnerJoin(list)
-                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null || DateTime.Equals(v_ch_p.CheckIn.CheckInTime, null))
+                    list = new CheckInsVehicles().InnerJoin(list)
+                           .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenByDescending(v_ch_p => GetCheckInTime(v_ch_p.CheckIn))
                            .Select(v_ch_p => v_ch_p.Vehicle);
                     break;
                 case "spot_asc":
-                    list = InnerJoin(list)
+                    list = new CheckInsVehicles().InnerJoin(list)
                            .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenBy(v_ch_p => GetLabel(v_ch_p.ParkingSpot))
                            .Select(v_ch_p => v_ch_p.Vehicle);
                     break;
                 case "spot_desc":
-                    list = InnerJoin(list)
+                    list = new CheckInsVehicles().InnerJoin(list)
                            .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenByDescending(v_ch_p => GetLabel(v_ch_p.ParkingSpot))
                            .Select(v_ch_p => v_ch_p.Vehicle);
                     break;
                 case "fee_asc":
-                    list = InnerJoin(list)
+                    list = new CheckInsVehicles().InnerJoin(list)
                            .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenBy(v_ch_p => GetFee(v_ch_p))
                            .Select(v_ch_p => v_ch_p.Vehicle);
                     break;
                 case "fee_desc":
-                    list = InnerJoin(list)
+                    list = new CheckInsVehicles().InnerJoin(list)
                            .OrderBy(v_ch_p => v_ch_p.CheckIn == null)
                            .ThenByDescending(v_ch_p => GetFee(v_ch_p))
                            .Select(v_ch_p => v_ch_p.Vehicle);
@@ -107,14 +107,6 @@ namespace MVCGarage.Controllers
             }
 
             return list;
-        }
-
-        private IEnumerable<InnerJoinResult> InnerJoin(IEnumerable<Vehicle> vehicles)
-        {
-            return from p in parkingSpots.ParkingSpots()
-                   join ch in checkIns.CheckIns() on p.ID equals ch.ParkingSpotID
-                   join v in vehicles on ch.VehicleID equals v.ID
-                   select new InnerJoinResult { Vehicle = v, ParkingSpot = p, CheckIn = ch };
         }
 
         private DateTime GetCheckInTime(CheckIn checkIn)
@@ -178,11 +170,7 @@ namespace MVCGarage.Controllers
                 if (checkIn != null)
                 {
                     parkedVehicles.Add(vehicle);
-
-                    if (checkIn.Booked)
-                        dicParkingSpots.Add(vehicle.ID, null);
-                    else
-                        dicParkingSpots.Add(vehicle.ID, checkIn);
+                    dicParkingSpots.Add(vehicle.ID, checkIn);
                 }
             }
 
@@ -242,16 +230,12 @@ namespace MVCGarage.Controllers
             foreach (ParkingSpot foundParkingSpot in parkingSpotsController.Sort(parkingSpots.ParkingSpotsByIdentifiant(searchedValue), sortOrder))
             {
                 CheckIn checkIn = checkIns.CheckInByParkingSpot(foundParkingSpot.ID);
-                Vehicle parkedVehicle = null;
-
-                if (checkIn != null)
-                    parkedVehicle = checkIn.Vehicle;
 
                 foundParkingSpots.Add(new DetailsParkingSpotVM
                 {
                     Availability = new CheckInsParkingSpots().Availability(checkIn),
                     ParkingSpot = foundParkingSpot,
-                    Vehicle = parkedVehicle
+                    CheckIn = checkIn
                 });
             }
 
@@ -283,13 +267,6 @@ namespace MVCGarage.Controllers
                 parkingSpots.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private class InnerJoinResult
-        {
-            internal Vehicle Vehicle { get; set; }
-            internal ParkingSpot ParkingSpot { get; set; }
-            internal CheckIn CheckIn { get; set; }
         }
     }
 }

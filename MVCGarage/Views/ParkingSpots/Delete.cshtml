@@ -33,7 +33,7 @@
                     @Html.DisplayFor(model => model.Label)
                 </td>
                 <td>
-                    @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(Model.VehicleType))
+                    @Html.DisplayFor(model => model.VehicleType.Type)
                 </td>
                 <td>
                     @Model.DisplayFee()

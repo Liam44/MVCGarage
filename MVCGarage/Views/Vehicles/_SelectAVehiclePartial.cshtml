@@ -41,7 +41,7 @@
                             @Html.DisplayFor(modelItem => item.Owner)
                         </td>
                         <td>
-                            @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(item.VehicleType))
+                            @Html.DisplayFor(modelItem => item.VehicleType.Type)
                         </td>
                     </tr>
                 }

@@ -1,11 +1,11 @@
 ﻿using MVCGarage.Models;
 
-namespace MVCGarage.ViewModels.Shared
+namespace MVCGarage.Controllers
 {
-    public class DetailsParkingSpotVM
+    public class InnerJoinResult
     {
         public ParkingSpot ParkingSpot { get; set; }
         public CheckIn CheckIn { get; set; }
-        public string Availability { get; set; }
+        public Vehicle Vehicle { get; set; }
     }
 }

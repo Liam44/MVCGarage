@@ -26,19 +26,29 @@ namespace MVCGarage.Controllers
                 return checkIn.Vehicle;
         }
 
-        public string Availability(int parkingSpotId)
+        public IEnumerable<ParkingSpot> AvailableParkingSpots(int? vehicleTypeId = null)
         {
-            CheckIn checkIn = checkIns.CheckInByParkingSpot(parkingSpotId);
-
-            if (checkIn == null)
-                return "Yes";
-            else
+            return parkingSpots.ParkingSpots(vehicleTypeId).Select(p => new
             {
-                if (checkIn.Booked)
-                    return "Booked by " + checkIn.Vehicle.RegistrationPlate;
-                else
-                    return "Taken by " + checkIn.Vehicle.RegistrationPlate;
-            }
+                ParkingSpot = p,
+                CheckIns = checkIns.CheckIns().Where(ch => !ch.Free && ch.ParkingSpotID == p.ID)
+            })
+            .Where(chp => chp.CheckIns.Count() == 0)
+            .Select(chp => chp.ParkingSpot);
+        }
+
+        public IEnumerable<InnerJoinResult> InnerJoin(IEnumerable<ParkingSpot> parkingSpots)
+        {
+            return parkingSpots.Select(p => new
+            {
+                ParkingSpot = p,
+                CheckIn = checkIns.CheckIns().FirstOrDefault(ch => !ch.Free && ch.ParkingSpotID == p.ID)
+            }).Select(vch => new InnerJoinResult
+            {
+                ParkingSpot = vch.ParkingSpot,
+                CheckIn = vch.CheckIn,
+                Vehicle = vch.CheckIn?.Vehicle
+            });
         }
 
         public string Availability(CheckIn checkIn)
@@ -52,17 +62,6 @@ namespace MVCGarage.Controllers
                 else
                     return "Taken by " + checkIn.Vehicle.RegistrationPlate;
             }
-        }
-
-        public IEnumerable<ParkingSpot> AvailableParkingSpots(int? vehicleTypeId = null)
-        {
-            return parkingSpots.ParkingSpots(vehicleTypeId).Select(p => new
-            {
-                ParkingSpot = p,
-                CheckIns = checkIns.CheckIns().Where(ch => !ch.Free && ch.ParkingSpotID == p.ID)
-            })
-            .Where(chp => chp.CheckIns.Count() == 0)
-            .Select(chp => chp.ParkingSpot);
         }
     }
 }

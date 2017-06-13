@@ -11,7 +11,6 @@
     <p style="color:red">@Model.ErrorMessage</p>
 </div>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -23,21 +22,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ParkingSpot.VehicleType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @{
-                    if (Model.VehicleType == MVCGarage.Models.ETypeVehicle.undefined)
-                    {
-                        @Html.DropDownListFor(model => model.ParkingSpot.VehicleType,
-                                             (IEnumerable<SelectListItem>)ViewBag.SelectVehicleTypes,
-                                             htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.ParkingSpot.VehicleType,
-                                                   "",
-                                                   new { @class = "text-danger" })
-                    }
-                    else
-                    {
-                        @Html.DisplayName(MVCGarage.Models.EnumHelper.GetDescriptionAttr(Model.VehicleType))
-                    }
-                }
+                @Html.DropDownListFor(model => model.ParkingSpot.VehicleTypeID,
+                                      (IEnumerable<SelectListItem>)ViewBag.SelectVehicleTypes,
+                                      htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ParkingSpot.VehicleTypeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -69,10 +57,10 @@
                 @{
                     string toolTip = "Default fee values:";
                     toolTip += string.Format("{0}{1}{0}", Environment.NewLine, new string('-', 19));
-                    foreach (MVCGarage.Models.ETypeVehicle vehicleType in Model.DefaultFees.Keys)
+                    foreach (MVCGarage.Models.VehicleType vehicleType in Model.DefaultFees.Keys)
                     {
                         string text = string.Format("{0}: {1:N2}/min.",
-                                                    MVCGarage.Models.EnumHelper.GetDescriptionAttr(vehicleType),
+                                                    vehicleType.Type,
                                                     Model.DefaultFees[vehicleType]);
 
                         toolTip += string.Format("{0}{1}",
@@ -103,6 +91,7 @@
             </div>
         </div>
     </div>
+
 }
 
 <div>

@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace MVCGarage.Repositories
 {
-    public class VehicleTypeRepository : IDisposable
+    public class VehicleTypesRepository : IDisposable
     {
         private GarageContext db = new GarageContext();
 
