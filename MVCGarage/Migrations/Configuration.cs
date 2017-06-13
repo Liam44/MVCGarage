@@ -26,6 +26,15 @@ namespace MVCGarage.Migrations
                 truck,
                 bus);
 
+            Owner Mike = new Owner { Fname = "Mike", Lname = "Daughtrey", Gender = "M", LicenseNumber = "ABC-123-DEF" };
+            Owner Wilhelm = new Owner { Fname = "Wilhelm", Lname = "Hansson", Gender = "M", LicenseNumber = "ABC-124-DEF" };
+            Owner Liam = new Owner { Fname = "Liam", Lname = "Nottoosure", Gender = "M", LicenseNumber = "ABC-125-DEF" };
+
+            context.Owners.AddOrUpdate(o => o.ID,
+                Mike,
+                Wilhelm,
+                Liam);
+
             context.ParkingSpots.AddOrUpdate(p => p.ID,
                 new ParkingSpot { Label = "101", VehicleType = car, Fee = 0.20 },
                 new ParkingSpot { Label = "102", VehicleType = car, Fee = 0.20 },
@@ -35,18 +44,15 @@ namespace MVCGarage.Migrations
                 new ParkingSpot { Label = "202", VehicleType = bus, Fee = 1.00 });
 
             context.Vehicles.AddOrUpdate(v => v.ID,
-                new Vehicle { RegistrationPlate = "ABC123", VehicleType = car, Owner = "Owner" },
-                new Vehicle { RegistrationPlate = "ABC124", VehicleType = car, Owner = "Owner Two" },
-                new Vehicle { RegistrationPlate = "ABC125", VehicleType = motorcycle, Owner = "Owner Three" },
-                new Vehicle { RegistrationPlate = "ABC126", VehicleType = motorcycle, Owner = "Owner Four" },
-                new Vehicle { RegistrationPlate = "ABC127", VehicleType = car, Owner = "Owner Five" },
-                new Vehicle { RegistrationPlate = "ABC128", VehicleType = truck, Owner = "Owner Six" },
-                new Vehicle { RegistrationPlate = "ABC129", VehicleType = bus, Owner = "Owner Seven" });
+                new Vehicle { RegistrationPlate = "ABC123", VehicleType = car, Owner = Mike },
+                new Vehicle { RegistrationPlate = "ABC124", VehicleType = car, Owner = Wilhelm },
+                new Vehicle { RegistrationPlate = "ABC125", VehicleType = motorcycle, Owner = Liam },
+                new Vehicle { RegistrationPlate = "ABC126", VehicleType = motorcycle, Owner = Mike },
+                new Vehicle { RegistrationPlate = "ABC127", VehicleType = car, Owner = Wilhelm },
+                new Vehicle { RegistrationPlate = "ABC128", VehicleType = truck, Owner = Liam },
+                new Vehicle { RegistrationPlate = "ABC129", VehicleType = bus, Owner = Mike });
 
-            context.Owners.AddOrUpdate(o => o.ID,
-                new Owner { Fname = "Mike", Lname = "Daughtrey", Gender = "M", LicenseNumber = "ABC-123-DEF" },
-                new Owner { Fname = "Wilhelm", Lname = "Hansson", Gender = "M", LicenseNumber = "ABC-124-DEF" },
-                new Owner { Fname = "Liam", Lname = "Nottoosure", Gender = "M", LicenseNumber = "ABC-125-DEF" });
+
 
             //  This method will be called after migrating to the latest version.
 
