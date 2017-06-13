@@ -2,51 +2,61 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/ParkingSpots/Index.cshtml";
 }
 
-<h2>Index</h2>
+<div class="jumbotron header">
+    <h2>Owners</h2>
+    <hr />
+    <p>This is where you can see all registered Owners</p>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p style="font-size: 2em; text-align: center;">
+    @Html.ActionLink("Register a new owner", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Fname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LicenseNumber)
-        </th>
-        <th></th>
-    </tr>
+<div class="index-table">
+    <table class="table">
+        <tr>
+            <th>
+                @{string htmlName = @Html.DisplayNameFor(model => model.Fname).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.FnameSortParam })
+            </th>
+            <th>
+                @{htmlName = @Html.DisplayNameFor(model => model.Lname).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.LnameSortParam })
+            </th>
+            <th>
+                @{htmlName = @Html.DisplayNameFor(model => model.Gender).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.GenderSortParam })
+            </th>
+            <th>
+                @{htmlName = @Html.DisplayNameFor(model => model.LicenseNumber).ToHtmlString();}
+                @Html.ActionLink(htmlName, "Index", new { sortOrder = ViewBag.LiNumSortParam })
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LicenseNumber)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LicenseNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+</div>

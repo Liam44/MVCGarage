@@ -80,6 +80,10 @@ namespace MVCGarage.Repositories
             return query;
         }
 
+        //public Owner GetOwnerByVehicleID(int vID)
+        //{
+        //}
+
         #region IDisposable Support
 
         private bool disposedValue = false;
