@@ -19,5 +19,15 @@ namespace MVCGarage.DataAccess
             : base("DefaultConnection")
         {
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //One-To-Many
+            modelBuilder.Entity<Vehicle>()
+                        .HasRequired<VehicleType>(vt => vt.VehicleType)
+                        .WithMany(v => v.Vehicles);
+        }
     }
 }

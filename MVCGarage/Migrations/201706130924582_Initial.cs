@@ -57,7 +57,7 @@ namespace MVCGarage.Migrations
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Owners", t => t.OwnerID, cascadeDelete: true)
-                .ForeignKey("dbo.VehicleTypes", t => t.VehicleTypeID, cascadeDelete: true)
+                .ForeignKey("dbo.VehicleTypes", t => t.VehicleTypeID, cascadeDelete: false)
                 .Index(t => t.OwnerID)
                 .Index(t => t.VehicleTypeID);
             
