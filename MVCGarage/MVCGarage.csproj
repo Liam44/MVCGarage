@@ -282,6 +282,10 @@
     <Content Include="Views\DefaultFees\Details.cshtml" />
     <Content Include="Views\DefaultFees\Edit.cshtml" />
     <Content Include="Views\DefaultFees\Index.cshtml" />
+    <Content Include="Views\Owners\Create.cshtml" />
+    <Content Include="Views\Owners\Delete.cshtml" />
+    <Content Include="Views\Owners\Details.cshtml" />
+    <Content Include="Views\Owners\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
