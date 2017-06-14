@@ -77,6 +77,24 @@ namespace MVCGarage.Repositories
             return query;
         }
 
+        public IEnumerable<Owner> GetOwnersWithVehicles()
+        {
+            var query = from o in db.Owners
+                        where o.Vehicles != null
+                        select o;
+
+            return query;
+        }
+
+        public IEnumerable<Owner> GetOwnersWithNoVehicles()
+        {
+            var query = from o in db.Owners
+                        where o.Vehicles == null
+                        select o;
+
+            return query;
+        }
+
         public Owner Find(int? id)
         { 
             var query = (from o in db.Owners
