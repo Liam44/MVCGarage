@@ -25,14 +25,20 @@ namespace MVCGarage.Repositories
 
         public void RemoveOwner(Owner owner)
         {
-            db.Owners.Remove(owner);
-            db.SaveChanges();
+            if (owner.Vehicles == null)
+            {
+                db.Owners.Remove(owner);
+                db.SaveChanges();
+            }
         }
 
         public void EditOwner(Owner owner)
         {
-            db.Entry(owner).State = EntityState.Modified;
-            db.SaveChanges();
+            if (owner.Vehicles == null)
+            {
+                db.Entry(owner).State = EntityState.Modified;
+                db.SaveChanges();
+            }
         }
 
         public IEnumerable<Owner> GetOwnersByFirstName(string name)
